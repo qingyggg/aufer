@@ -1,0 +1,1577 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/ping": {
+            "get": {
+                "description": "测试服务器连接",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ping"
+                ],
+                "summary": "测试服务器连接",
+                "responses": {}
+            }
+        },
+        "/publish": {
+            "get": {
+                "description": "根据文章ID获取文章的详细内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "获取文章详细信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章ID",
+                        "name": "Aid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "作者用户ID",
+                        "name": "Uid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前登录用户ID",
+                        "name": "MyUid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "文章详情返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/article.ArticleResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "用户修改已发布的文章内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "修改已发布文章",
+                "parameters": [
+                    {
+                        "description": "文章修改请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.PublishRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "修改成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/article.PubOrModActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "用户发布新的文章内容",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "发布新文章",
+                "parameters": [
+                    {
+                        "description": "文章发布请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.PublishRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "发布成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/article.PubOrModActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "用户删除已发布的文章",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "删除已发布文章",
+                "parameters": [
+                    {
+                        "description": "文章ID参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.Aid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/collect": {
+            "post": {
+                "description": "用户对文章进行收藏或取消收藏操作",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "收藏或取消收藏文章",
+                "parameters": [
+                    {
+                        "description": "收藏请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.CollectRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "操作成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/comment": {
+            "post": {
+                "description": "为特定文章或帖子创建新评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "创建新评论",
+                "parameters": [
+                    {
+                        "description": "评论创建信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应，包含评论ID",
+                        "schema": {
+                            "$ref": "#/definitions/comment.CmtActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "通过ID删除已存在的评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "删除评论",
+                "parameters": [
+                    {
+                        "description": "评论删除信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.DelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "禁止访问",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "评论未找到",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/comment/favorite": {
+            "post": {
+                "description": "点赞评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "点赞评论",
+                "parameters": [
+                    {
+                        "description": "评论收藏信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/favorite.FavoriteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "评论未找到",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/comment/list": {
+            "post": {
+                "description": "返回特定文章或帖子的评论列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论"
+                ],
+                "summary": "获取评论列表",
+                "parameters": [
+                    {
+                        "description": "评论列表参数",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应，包含评论列表",
+                        "schema": {
+                            "$ref": "#/definitions/comment.CardsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "评论未找到",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/favorite": {
+            "post": {
+                "description": "用户对文章进行点赞或取消点赞操作",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "点赞或取消点赞文章",
+                "parameters": [
+                    {
+                        "description": "点赞请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.FavoriteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "操作成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/list": {
+            "post": {
+                "description": "根据条件筛选获取文章列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "获取文章列表",
+                "parameters": [
+                    {
+                        "description": "文章列表查询参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.CardsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "文章列表返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/article.CardsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/publish/view_count_add": {
+            "post": {
+                "description": "记录文章被浏览一次，增加浏览计数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章操作"
+                ],
+                "summary": "增加文章浏览计数",
+                "parameters": [
+                    {
+                        "description": "文章ID参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.Aid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "操作成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/relation/follow": {
+            "post": {
+                "description": "关注或者取关用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "关注或者取关用户",
+                "parameters": [
+                    {
+                        "description": "用户关注信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/relation/follow/list": {
+            "get": {
+                "description": "用户关注列表或者被关注列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "用户关注列表或者被关注列表",
+                "parameters": [
+                    {
+                        "description": "用户关注或被关注列表请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应",
+                        "schema": {
+                            "$ref": "#/definitions/relation.ListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/file": {
+            "post": {
+                "description": "用户可以通过该接口上传文件",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件上传接口"
+                ],
+                "summary": "上传文件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "上传的文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "上传的类型，是头像还是背景图片",
+                        "name": "file_type",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回文件信息",
+                        "schema": {
+                            "$ref": "#/definitions/common.UploadResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "根据用户ID获取用户的详细信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "获取用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "要查询的用户ID",
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "当前登录用户ID，不提供则默认为guest",
+                        "name": "my_uid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "用户信息",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "用户使用邮箱和密码登录系统",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "用户登录信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.LoginOrRegRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登录成功返回的用户信息",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "邮箱或密码错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile_mod": {
+            "post": {
+                "description": "用户修改个人资料信息，包括头像、背景图片、签名和名称",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "修改用户资料",
+                "parameters": [
+                    {
+                        "description": "用户资料修改信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.ProfileModRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "资料修改成功返回的用户信息",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权，用户未登录",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/pwd_mod": {
+            "post": {
+                "description": "用户修改自己的登录密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "修改用户密码",
+                "parameters": [
+                    {
+                        "description": "密码修改信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.PwdModRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "密码修改成功返回的用户信息",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "旧密码验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "用户不存在",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "创建新用户账号",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户注册",
+                "parameters": [
+                    {
+                        "description": "用户注册信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.LoginOrRegRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "注册成功返回的用户信息",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserActionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "邮箱已被注册",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/common.BaseResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "article.Article": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_cmd_user.User"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "info": {
+                    "$ref": "#/definitions/article.ArticleInfo"
+                }
+            }
+        },
+        "article.ArticleCard": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "$ref": "#/definitions/user.UserBase"
+                },
+                "info": {
+                    "$ref": "#/definitions/article.ArticleInfo"
+                }
+            }
+        },
+        "article.ArticleInfo": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "collect_count": {
+                    "type": "integer"
+                },
+                "comment_count": {
+                    "description": "total number of comments on the video",
+                    "type": "integer"
+                },
+                "cover_url": {
+                    "type": "string"
+                },
+                "created_date": {
+                    "type": "string"
+                },
+                "is_collect": {
+                    "type": "boolean"
+                },
+                "is_favorite": {
+                    "description": "true-Liked，false-did not like",
+                    "type": "boolean"
+                },
+                "last_modified_date": {
+                    "type": "string"
+                },
+                "like_count": {
+                    "description": "total number of likes for the video",
+                    "type": "integer"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "viewed_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "article.ArticleResponse": {
+            "type": "object",
+            "properties": {
+                "article": {
+                    "$ref": "#/definitions/article.Article"
+                },
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                }
+            }
+        },
+        "article.CardsResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/article.ArticleCard"
+                    }
+                }
+            }
+        },
+        "article.PubOrModActionResponse": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                }
+            }
+        },
+        "comment.CardsResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "list": {
+                    "description": "return comment list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/comment.Comment"
+                    }
+                }
+            }
+        },
+        "comment.CmtActionResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "cid": {
+                    "type": "string"
+                }
+            }
+        },
+        "comment.Comment": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "description": "文章的id",
+                    "type": "string"
+                },
+                "child_num": {
+                    "description": "该评论被回复的数量，当为一级评论时候，显示数量，二级的时候，显示为0",
+                    "type": "integer"
+                },
+                "cid": {
+                    "type": "string"
+                },
+                "content": {
+                    "description": "comment",
+                    "type": "string"
+                },
+                "create_date": {
+                    "description": "comment publication date, format mm-dd",
+                    "type": "string"
+                },
+                "favorite_count": {
+                    "description": "该评论获得的点赞数量",
+                    "type": "integer"
+                },
+                "is_favorite": {
+                    "type": "boolean"
+                },
+                "replied_uid": {
+                    "description": "如果该评论为某评论的回复，则该字段为被回复的用户的hashID",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "comment user information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/user.UserBase"
+                        }
+                    ]
+                }
+            }
+        },
+        "common.BaseResponse": {
+            "type": "object",
+            "properties": {
+                "serviceTime": {
+                    "type": "integer"
+                },
+                "statusCode": {
+                    "type": "integer"
+                },
+                "statusMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.UploadResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "fileUrl": {
+                    "description": "文件存储的URL",
+                    "type": "string"
+                }
+            }
+        },
+        "favorite.FavoriteRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "cid": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_cmd_user.User": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/user.UserBase"
+                },
+                "info": {
+                    "$ref": "#/definitions/user.UserInfo"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.Aid": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.CardsRequest": {
+            "type": "object",
+            "properties": {
+                "authorId": {
+                    "description": "作者id",
+                    "type": "string"
+                },
+                "category": {
+                    "description": "文章种类",
+                    "type": "string"
+                },
+                "is_collected": {
+                    "description": "是否为该用户收藏的文章",
+                    "type": "boolean"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "tags": {
+                    "description": "文章标签",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "type": {
+                    "description": "1-\u003e请求最新的 2-\u003e请求最热门的",
+                    "type": "integer"
+                },
+                "uid": {
+                    "description": "用户id",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.CollectRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "description": "文章的id",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "1-collect, 2-Uncollect",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.FavoriteRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "cid": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.PublishRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "cover_url": {
+                    "type": "string"
+                },
+                "my_uid": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.LoginOrRegRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.ProfileModRequest": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "user avatar URL",
+                    "type": "string"
+                },
+                "background_image": {
+                    "description": "image at the top of the user's personal page",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "user name",
+                    "type": "string"
+                },
+                "signature": {
+                    "description": "user profile",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.PwdModRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "new_password": {
+                    "type": "string"
+                },
+                "old_password": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "cid": {
+                    "type": "string"
+                },
+                "degree": {
+                    "description": "1:请求一级评论 2：请求二级评论",
+                    "type": "integer"
+                },
+                "my_uid": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "1.根据热度 2.根据时间先后",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "description": "文章的id",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "评论内容",
+                    "type": "string"
+                },
+                "degree": {
+                    "description": "评论等级，只能为1或者2",
+                    "type": "integer"
+                },
+                "pid": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_interact_comment.DelRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "cid": {
+                    "description": "评论id or \"null\"",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "1:删除文章所有评论 2:删除该评论以及所有子评论",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "1-Follow, 2-Unfollow",
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "string"
+                }
+            }
+        },
+        "relation.ListResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "list": {
+                    "description": "User information list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user.UserBase"
+                    }
+                }
+            }
+        },
+        "user.UserActionResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "puid": {
+                    "description": "用以存储cookie的user主键",
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.UserBase": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "user avatar URL",
+                    "type": "string"
+                },
+                "background_image": {
+                    "description": "image at the top of the user's personal page",
+                    "type": "string"
+                },
+                "created_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "user name",
+                    "type": "string"
+                },
+                "signature": {
+                    "description": "user profile",
+                    "type": "string"
+                },
+                "uid": {
+                    "description": "hash id",
+                    "type": "string"
+                }
+            }
+        },
+        "user.UserInfo": {
+            "type": "object",
+            "properties": {
+                "follow_count": {
+                    "description": "total number of people the user follows",
+                    "type": "integer"
+                },
+                "follower_count": {
+                    "description": "total number of fans",
+                    "type": "integer"
+                },
+                "is_follow": {
+                    "description": "whether the currently logged-in user follows this user",
+                    "type": "boolean"
+                },
+                "total_favorited": {
+                    "description": "number of articles for articles published by user",
+                    "type": "integer"
+                },
+                "work_count": {
+                    "description": "number of articles published by user",
+                    "type": "integer"
+                }
+            }
+        },
+        "user.UserResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/common.BaseResponse"
+                },
+                "user": {
+                    "description": "User Info",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_cmd_user.User"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

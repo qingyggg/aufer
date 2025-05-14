@@ -1,0 +1,94 @@
+syntax = "proto3";
+package rpc.user;
+import "rpc/common.proto";
+option go_package = "cmd/user";
+
+message UserBase{
+  string avatar = 1; // user avatar URL
+  string background_image =2; // image at the top of the user's personal page
+  string signature = 3; // user profile
+  string name = 4; // user name
+  string uid=5;//hash id
+  string created_date=6;
+  string email=7;
+}
+
+message UserInfo{
+  int64 follow_count = 1; // total number of people the user follows
+  int64 follower_count = 2; // total number of fans
+  bool is_follow = 3; // whether the currently logged-in user follows this user
+  int64 total_favorited = 4; // number of articles for articles published by user
+  int64 work_count = 5; // number of articles published by user
+}
+
+message User {
+  UserBase base=1;
+  UserInfo info=2;
+}
+
+message LoginOrRegRequest {
+  string email = 1;
+  string password = 2;
+}
+message PwdModRequest {
+  string new_password = 1;
+  string old_password = 2;
+  string email=3;
+}
+message ProfileModRequest{
+  string avatar = 1; // user avatar URL
+  string background_image =2; // image at the top of the user's personal page
+  string signature = 3; // user profile
+  string name = 4; // user name
+  string uid=5;
+}
+
+message UserRequest {
+  string uid=1;
+  string myUid=2;
+}
+message UserBaseRequestByPuid{
+  int64 puid=1;
+}
+message UserBasesRequest{
+  repeated string uids=1;
+}
+message UserBaseRequest{
+  string uid=1;
+}
+message UserExistRequest{
+  string uid=1;
+}
+message UserExistResponse{
+  rpc.common.BaseResponse base=1;
+  bool exist=2;
+}
+message UserResponse {
+  rpc.common.BaseResponse base=1;
+  User user = 2; // User Info
+}
+message UserBaseResponse{
+  rpc.common.BaseResponse base=1;
+  UserBase user=2;
+}
+message UserBasesResponse{
+  rpc.common.BaseResponse base=1;
+  map<string, UserBase>  userMap=2;
+}
+message UserActionResponse {
+  rpc.common.BaseResponse base=1;
+  string uid=2;
+  int64 puid=3;//用以存储cookie的user主键
+}
+service UserHandler {
+  rpc User(UserRequest) returns(UserResponse) {}
+  rpc QueryUserBases(UserBasesRequest) returns(UserBasesResponse){}
+  rpc QueryUserBase(UserBaseRequest) returns(UserBaseResponse){}
+  rpc QueryUserBaseByPuid(UserBaseRequestByPuid) returns(UserBaseResponse){}
+  rpc UserRegister(LoginOrRegRequest) returns(UserActionResponse) {}
+  rpc UserLogin(LoginOrRegRequest) returns(UserActionResponse) {}
+  rpc UserPwdModify(PwdModRequest) returns(UserActionResponse){}
+  rpc UserProfileModify(ProfileModRequest) returns(UserActionResponse){}
+  rpc UserExist(UserExistRequest)returns(UserExistResponse){}
+}
+

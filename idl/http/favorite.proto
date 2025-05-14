@@ -1,0 +1,10 @@
+syntax = "proto3";
+package http.favorite;
+option go_package = "http/interact/favorite";
+import "http/api.proto";
+
+message FavoriteRequest {
+  string cid = 1[(api.go_tag)='json:"cid,required"'];
+  string aid =2[(api.go_tag)='json:"aid,required"'];
+  int32 type = 3[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2'];
+}

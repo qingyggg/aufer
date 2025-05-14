@@ -1,0 +1,73 @@
+syntax = "proto3";
+package rpc.comment;
+import "rpc/common.proto";
+import "rpc/user.proto";
+option go_package = "cmd/comment";
+
+message Comment {
+  string cid=1;
+  string aid=2; //文章的id
+  rpc.user.UserBase user =3; // comment user information
+  string content = 4; // comment
+  string create_date = 5; // comment publication date, format mm-dd
+  int64 favorite_count =6;//该评论获得的点赞数量
+  int64 child_num=7;//该评论被回复的数量，当为一级评论时候，显示数量，二级的时候，显示为0
+  string replied_uid=8;//如果该评论为某评论的回复，则该字段为被回复的用户的hashID
+  bool is_favorite=9;
+}
+message CmtRequest {
+  string pid =1;//父亲评论的id
+  string aid=2; //文章的id
+  string content=3;//评论内容
+  int32 degree=4; //评论等级，只能为1或者2
+  string uid=5;//键盘侠的id
+}
+message DelRequest{
+  string cid=1;//评论id
+  string aid=2;
+  int32 type=3;//1:删除文章所有评论 2:删除该评论以及所有子评论
+  string uid=4;//键盘侠的id
+}
+message FavoriteRequest {
+  string cid = 1;
+  int32 type = 2;
+  string uid=3;
+  string aid=4;
+}
+message CardsRequest {
+  string aid=1;
+  string cid=2;//父亲评论的Id
+  int32 degree=3;//1:请求一级评论 2：请求二级评论
+  string myUid=4;//键盘侠的id
+}
+message CmtCtRequest{
+  string aid=1;
+}
+message CmtsCtRequest{
+  repeated string aids=1;
+}
+message CardsResponse {
+  rpc.common.BaseResponse base=1;
+  repeated Comment list = 2; // return comment list
+}
+message CmtActionResponse {
+  rpc.common.BaseResponse base=1;
+  string cid=2;
+}
+message  CmtCtMapResponse{
+  rpc.common.BaseResponse base=1;
+  map<string, int64>  ctMap=2;
+}
+message CmtCtResponse {
+  rpc.common.BaseResponse base=1;
+  int64 count=2;
+}
+service CommentHandler {
+  rpc CommentAction(CmtRequest) returns(CmtActionResponse) {}
+  rpc CommentDelAction(DelRequest) returns(rpc.common.BaseResponse){}
+  rpc CommentList(CardsRequest) returns(CardsResponse) {}
+  rpc CommentFavorite(FavoriteRequest) returns(rpc.common.BaseResponse) {}
+  rpc CommentCount(CmtCtRequest) returns(CmtCtResponse){}
+  rpc CommentCounts(CmtsCtRequest) returns(CmtCtMapResponse){}
+}
+

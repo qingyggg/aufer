@@ -1,0 +1,43 @@
+syntax = "proto3";
+package rpc.relation;
+import "rpc/common.proto";
+import "rpc/user.proto";
+option go_package = "cmd/relation";
+
+message FollowRequest {
+  string uid = 1;
+  string myUid=2;
+  int32 type = 3; // 1-Follow, 2-Unfollow
+}
+message ListRequest { //follow list
+  string uid = 1;
+  int32 type=2;//1.following 2.followed
+}
+message IsFollowRequest{
+  string uid=1;
+  string myUid=2;
+}
+message UserFollowInfoRequest{
+  string uid=1;
+}
+message UserFollowInfoResponse{
+  uint64 followerCount=1;
+  uint64 followingCount=2;
+  rpc.common.BaseResponse base=3;
+}
+message IsFollowResponse{
+  rpc.common.BaseResponse base=1;
+  bool isFollow =2;
+}
+
+message ListResponse {
+  rpc.common.BaseResponse base=1;
+  repeated rpc.user.UserBase list = 2; // User information list
+}
+service RelationHandler {
+  rpc Follow(FollowRequest) returns(rpc.common.BaseResponse) {}
+  rpc FollowList(ListRequest) returns(ListResponse) {}
+  rpc IsFollow(IsFollowRequest) returns(IsFollowResponse){}
+  rpc UserFollowInfo(UserFollowInfoRequest) returns(UserFollowInfoResponse){}
+}
+

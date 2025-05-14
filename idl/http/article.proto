@@ -1,0 +1,76 @@
+syntax = "proto3";
+package http.publish;
+import "rpc/common.proto";
+import "rpc/article.proto";
+import "http/api.proto";
+option go_package = "http/basic/article";
+
+message PublishRequest{
+  string note=1[(api.go_tag)='json:"note,required"'];
+  string title=2[(api.go_tag)='json:"title,required"'];
+  string cover_url=3[(api.go_tag)='json:"cover_url,required"'];
+  string content=4[(api.go_tag)='json:"content,required"'];
+  string myUid=5[(api.go_tag)='json:"my_uid,required"'];
+}
+message ModRequest{
+  string note=1[(api.go_tag)='json:"note,required"'];
+  string title=2[(api.go_tag)='json:"title,required"'];
+  string cover_url=3[(api.go_tag)='json:"cover_url,required"'];
+  string content=4[(api.go_tag)='json:"content,required"'];
+  string aid=5[(api.go_tag)='json:"aid,required"'];
+}
+message Aid{
+  string aid=1[(api.go_tag)='json:"aid,required"'];
+}
+//文章卡片列表
+message CardsRequest {
+  string authorId = 1;//作者id
+  int32 offset=2;
+  repeated string tags=3;//文章标签
+  string category=4;//文章种类
+  int32 type=5[(api.go_tag)='json:"type"',(api.vd)='$==1 || $==2'];//1->请求最新的 2->请求最热门的
+  bool is_collected=6;//是否为该用户收藏的文章
+  string uid=7;//用户id
+}
+message CollectRequest {
+  string aid=1[(api.go_tag)='json:"aid,required"']; //文章的id
+  int32 type = 2[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2']; // 1-collect, 2-Uncollect
+}
+message DetailRequest {
+  string aid=1[(api.go_tag)='json:"aid,required"']; //文章的id
+  string uid=2 [(api.go_tag)='json:"uid,required"']; //作者的id
+  string myUid=3[(api.go_tag)='json:"my_uid,required"'];//用户的id，可能为guest
+}
+message FavoriteRequest {
+  string cid = 1[(api.go_tag)='json:"cid,required"'];
+  string aid =2[(api.go_tag)='json:"aid,required"'];
+  int32 type = 3[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2'];
+}
+
+service PublishHandler {
+  rpc PublishAction(PublishRequest) returns(rpc.article.PubOrModActionResponse) {
+    option (api.post) = "/publish";
+  }
+  rpc PublishModifyAction(ModRequest) returns(rpc.article.PubOrModActionResponse) {
+    option (api.put) = "/publish";
+  }
+  rpc PublishDelAction(Aid) returns(rpc.common.BaseResponse) {
+    option (api.delete) = "/publish";
+  }
+  rpc PublishDetail(Aid) returns(rpc.article.ArticleResponse) {
+    option (api.get) = "/publish";
+  }
+  rpc PublishList(CardsRequest) returns(rpc.article.CardsResponse) {
+    option (api.post) = "/publish/list";
+  }
+  rpc PublishViewCountAdd(Aid) returns(rpc.common.BaseResponse){
+    option (api.post) = "/publish/view_count_add";
+  }
+  rpc PublishCollect(CollectRequest) returns(rpc.common.BaseResponse) {
+    option (api.post) = "/publish/collect";
+  }
+  rpc PublishFavorite(FavoriteRequest) returns(rpc.common.BaseResponse) {
+    option (api.post) = "/publish/favorite";
+  }
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package rpc.common;
+option go_package = "cmd/common";
+
+message BaseResponse{
+  int32 statusCode = 1;
+  string statusMsg = 2;
+  int64 serviceTime = 3;
+}
+// 文件上传响应消息
+message UploadResponse {
+  BaseResponse base=1;
+  string fileUrl = 2;  // 文件存储的URL
+}

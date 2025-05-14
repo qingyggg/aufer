@@ -1,0 +1,42 @@
+syntax = "proto3";
+package http.comment;
+import "rpc/common.proto";
+import "rpc/comment.proto";
+import "http/favorite.proto";
+import "http/api.proto";
+option go_package = "http/interact/comment";
+
+message CmtRequest {
+  string pid =1[(api.go_tag)='json:"pid,required"'];;//父亲评论的id
+  string aid=2[(api.go_tag)='json:"aid,required"']; //文章的id
+  string content=3[(api.go_tag)='json:"content,required"'];//评论内容
+  int32 degree=4[(api.go_tag)='json:"degree,required"',(api.vd)='$==1 || $==2']; //评论等级，只能为1或者2
+}
+message DelRequest{
+  string cid=1;//评论id or "null"
+  string aid=2;
+  int32 type=3[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2'];//1:删除文章所有评论 2:删除该评论以及所有子评论
+}
+message CardsRequest {
+  string aid=1[(api.go_tag)='json:"aid,required"'];
+  string cid=2[(api.go_tag)='json:"cid,required"'];
+  int32 degree=3[(api.go_tag)='json:"degree,required"',(api.vd)='$==1 || $==2'];//1:请求一级评论 2：请求二级评论
+  int32 type=4[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2'];//1.根据热度 2.根据时间先后
+  string myUid=5[(api.go_tag)='json:"my_uid,required"'];
+}
+
+service CommentHandler {
+  rpc CommentAction(CmtRequest) returns(rpc.comment.CmtActionResponse) {
+    option (api.post) = "/publish/comment";
+  }
+  rpc CommentDelAction(DelRequest) returns(rpc.common.BaseResponse){
+    option (api.delete) = "/publish/comment";
+  }
+  rpc CommentList(CardsRequest) returns(rpc.comment.CardsResponse) {
+    option (api.post) = "/publish/comment/list";
+  }
+  rpc CommentFavorite(favorite.FavoriteRequest) returns(rpc.common.BaseResponse) {
+    option (api.post) = "/publish/comment/favorite";
+  }
+}
+

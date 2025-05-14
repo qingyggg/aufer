@@ -1,0 +1,47 @@
+syntax = "proto3";
+package http.user;
+import "http/api.proto";
+import "rpc/user.proto";
+option go_package = "http/basic/user";
+
+message LoginOrRegRequest {
+  string email = 1[(api.go_tag)='json:"email,required"',(api.vd)='email($)'];
+  string password = 2[(api.go_tag)='json:"password,required"',(api.vd)='password($)'];
+}
+message PwdModRequest {
+  string new_password = 1[(api.go_tag)='json:"new_password,required"',(api.vd)='password($)'];
+  string old_password = 2[(api.go_tag)='json:"old_password,required"',(api.vd)='password($)'];
+  string email = 3[(api.go_tag)='json:"email,required"',(api.vd)='email($)'];
+
+}
+message ProfileModRequest{
+  string avatar = 1; // user avatar URL
+  string background_image =2; // image at the top of the user's personal page
+  string signature = 3; // user profile
+  string name = 4; // user name
+}
+
+message UserRequest {
+  string uid=1[(api.go_tag)='json:"uid,required"'];
+  string myUid=2[(api.go_tag)='json:"my_uid"'];
+}
+
+
+service UserHandler {
+  rpc User(UserRequest) returns(rpc.user.UserResponse) {
+    option (api.get) = "/user";
+  }
+  rpc UserRegister(LoginOrRegRequest) returns(rpc.user.UserActionResponse) {
+    option (api.post) = "/user/register";
+  }
+  rpc UserLogin(LoginOrRegRequest) returns(rpc.user.UserActionResponse) {
+    option (api.post) = "/user/login";
+  }
+  rpc UserPwdModify(PwdModRequest) returns(rpc.user.UserActionResponse){
+    option (api.post) = "/user/pwd_mod";
+  }
+  rpc UserProfileModify(ProfileModRequest) returns(rpc.user.UserActionResponse){
+    option (api.post) = "/user/profile_mod";
+  }
+}
+

@@ -1,0 +1,248 @@
+name: aufer
+
+# 启用 BuildKit
+x-build-args: &build-args
+  BUILDKIT_INLINE_CACHE: 1
+
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: aufer_mariadb
+    volumes:
+      - mariadb-data:/var/lib/mysql  # 使用命名卷持久化 MySQL 数据
+      - ./pkg/configs/sql:/docker-entrypoint-initdb.d  # 初始化 SQL 脚本
+    ports:
+      - "18000:3306"
+    environment:
+      - MYSQL_DATABASE=storybook
+      - MYSQL_USER=storybook
+      - MYSQL_PASSWORD=blog_server123
+      - MYSQL_RANDOM_ROOT_PASSWORD="yes"
+    restart: always
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 1m
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  minio:
+    image: minio/minio
+    container_name: aufer_minio
+    ports:
+      - "18001:9000"
+      - "18002:9001"
+    environment:
+      MINIO_ACCESS_KEY: blog_server
+      MINIO_SECRET_KEY: blog_server123
+    volumes:
+      - minio-data:/data  # 使用命名卷持久化 MinIO 数据
+    command: server --console-address ':9001' /data
+    privileged: true
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  redis:
+    image: redis:7
+    container_name: aufer_redis
+    ports:
+      - "18003:6379"
+    volumes:
+      - redis-data:/data  # 使用命名卷持久化 Redis 数据
+      - ./pkg/configs/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  mongo:
+    image: mongo:8.0
+    container_name: aufer_mongo
+    ports:
+      - "18004:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=blog_server
+      - MONGO_INITDB_ROOT_PASSWORD=blog_server123
+      - MONGO_INITDB_DATABASE=aufer
+    volumes:
+      - mongo-data:/data/db  # 使用命名卷持久化 MongoDB 数据
+      - ./pkg/configs/mongo:/docker-entrypoint-initdb.d  # MongoDB初始化脚本
+    restart: always
+    healthcheck:
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  etcd:
+    image: "quay.io/coreos/etcd:v3.5.5"
+    container_name: aufer_etcd
+    environment:
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCDCTL_API=3
+    volumes:
+      - etcd-data:/etcd-data
+    ports:
+      - "2379:2379"
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+  jaeger:
+    image: jaegertracing/all-in-one:1.42
+    container_name: aufer_jaeger
+    ports:
+      - "18006:6831/udp"
+      - "18007:16686"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:16686/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  nginx:
+    image: nginx:latest
+    container_name: aufer_nginx
+    ports:
+      - "443:443"  # HTTP 端口
+    volumes:
+      - ./pkg/configs/nginx/nginx.conf:/etc/nginx/nginx.conf  # 修正配置文件挂载路径
+      - ./pkg/configs/nginx/certs/:/etc/nginx/certs            # 挂载 SSL 证书
+    restart: always
+
+  aufer-article-service:
+    build:
+      context: .
+      dockerfile: cmd/article/Dockerfile
+    container_name: aufer-article-service
+    volumes:
+      - ./envs:/envs
+    environment:
+      - FOO_ENV=production
+    ports:
+      - "18010:18010"
+    restart: always
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+  aufer-relation-service:
+    build:
+      context: .
+      dockerfile: cmd/relation/Dockerfile
+    container_name: aufer-relation-service
+    volumes:
+      - ./envs:/envs
+    environment:
+      - FOO_ENV=production
+    ports:
+      - "18011:18011"
+    restart: always
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+  aufer-comment-service:
+    build:
+      context: .
+      dockerfile: cmd/comment/Dockerfile
+    container_name: aufer-comment-service
+    volumes:
+      - ./envs:/envs
+    environment:
+      - FOO_ENV=production
+    ports:
+      - "18012:18012"
+    restart: always
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+  aufer-user-service:
+    build:
+      context: .
+      dockerfile: cmd/user/Dockerfile
+    container_name: aufer-user-service
+    volumes:
+      - ./envs:/envs
+    environment:
+      - FOO_ENV=production
+    ports:
+      - "18013:18013"
+    restart: always
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      etcd:
+        condition: service_healthy
+
+  aufer-api-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aufer-api-service
+    volumes:
+      - ./envs:/envs
+    environment:
+      - FOO_ENV=production
+    ports:
+      - "18014:18014"
+    restart: always
+    depends_on:
+      aufer-article-service:
+        condition: service_started
+      aufer-relation-service:
+        condition: service_started
+      aufer-comment-service:
+        condition: service_started
+      aufer-user-service:
+        condition: service_started
+      etcd:
+        condition: service_healthy
+
+volumes:
+  mariadb-data:  # MariaDB 数据持久化卷
+  minio-data:    # MinIO 数据持久化卷
+  redis-data:    # Redis 数据持久化卷
+  mongo-data:    # MongoDB 数据持久化卷
+  etcd-data:     # etcd 数据持久化卷
