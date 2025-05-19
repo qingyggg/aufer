@@ -2,10 +2,10 @@ package rpc
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/relation"
-	"github.com/qingyggg/aufer/biz/model/cmd/relation/relationhandler"
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	rpc_util "github.com/qingyggg/aufer/cmd"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/relation"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/relation/relationhandler"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 )
 
 func Follow(rc relationhandler.Client, ctx context.Context, req *relation.FollowRequest) error {

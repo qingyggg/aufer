@@ -1,21 +1,36 @@
+basePath: /
 definitions:
-  article.Article:
+  favorite.FavoriteRequest:
+    properties:
+      aid:
+        type: string
+      cid:
+        type: string
+      type:
+        type: integer
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_basic_article.Aid:
+    properties:
+      aid:
+        type: string
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_basic_article.Article:
     properties:
       author:
-        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_cmd_user.User'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.User'
       content:
         type: string
       info:
-        $ref: '#/definitions/article.ArticleInfo'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleInfo'
     type: object
-  article.ArticleCard:
+  github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleCard:
     properties:
       author:
-        $ref: '#/definitions/user.UserBase'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase'
       info:
-        $ref: '#/definitions/article.ArticleInfo'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleInfo'
     type: object
-  article.ArticleInfo:
+  github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleInfo:
     properties:
       aid:
         type: string
@@ -45,112 +60,12 @@ definitions:
       viewed_count:
         type: integer
     type: object
-  article.ArticleResponse:
+  github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleResponse:
     properties:
       article:
-        $ref: '#/definitions/article.Article'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.Article'
       base:
-        $ref: '#/definitions/common.BaseResponse'
-    type: object
-  article.CardsResponse:
-    properties:
-      base:
-        $ref: '#/definitions/common.BaseResponse'
-      list:
-        items:
-          $ref: '#/definitions/article.ArticleCard'
-        type: array
-    type: object
-  article.PubOrModActionResponse:
-    properties:
-      aid:
-        type: string
-      base:
-        $ref: '#/definitions/common.BaseResponse'
-    type: object
-  comment.CardsResponse:
-    properties:
-      base:
-        $ref: '#/definitions/common.BaseResponse'
-      list:
-        description: return comment list
-        items:
-          $ref: '#/definitions/comment.Comment'
-        type: array
-    type: object
-  comment.CmtActionResponse:
-    properties:
-      base:
-        $ref: '#/definitions/common.BaseResponse'
-      cid:
-        type: string
-    type: object
-  comment.Comment:
-    properties:
-      aid:
-        description: 文章的id
-        type: string
-      child_num:
-        description: 该评论被回复的数量，当为一级评论时候，显示数量，二级的时候，显示为0
-        type: integer
-      cid:
-        type: string
-      content:
-        description: comment
-        type: string
-      create_date:
-        description: comment publication date, format mm-dd
-        type: string
-      favorite_count:
-        description: 该评论获得的点赞数量
-        type: integer
-      is_favorite:
-        type: boolean
-      replied_uid:
-        description: 如果该评论为某评论的回复，则该字段为被回复的用户的hashID
-        type: string
-      user:
-        allOf:
-        - $ref: '#/definitions/user.UserBase'
-        description: comment user information
-    type: object
-  common.BaseResponse:
-    properties:
-      serviceTime:
-        type: integer
-      statusCode:
-        type: integer
-      statusMsg:
-        type: string
-    type: object
-  common.UploadResponse:
-    properties:
-      base:
-        $ref: '#/definitions/common.BaseResponse'
-      fileUrl:
-        description: 文件存储的URL
-        type: string
-    type: object
-  favorite.FavoriteRequest:
-    properties:
-      aid:
-        type: string
-      cid:
-        type: string
-      type:
-        type: integer
-    type: object
-  github_com_qingyggg_aufer_biz_model_cmd_user.User:
-    properties:
-      base:
-        $ref: '#/definitions/user.UserBase'
-      info:
-        $ref: '#/definitions/user.UserInfo'
-    type: object
-  github_com_qingyggg_aufer_biz_model_http_basic_article.Aid:
-    properties:
-      aid:
-        type: string
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
     type: object
   github_com_qingyggg_aufer_biz_model_http_basic_article.CardsRequest:
     properties:
@@ -177,6 +92,15 @@ definitions:
         description: 用户id
         type: string
     type: object
+  github_com_qingyggg_aufer_biz_model_http_basic_article.CardsResponse:
+    properties:
+      base:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
+      list:
+        items:
+          $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleCard'
+        type: array
+    type: object
   github_com_qingyggg_aufer_biz_model_http_basic_article.CollectRequest:
     properties:
       aid:
@@ -195,13 +119,18 @@ definitions:
       type:
         type: integer
     type: object
+  github_com_qingyggg_aufer_biz_model_http_basic_article.PubOrModActionResponse:
+    properties:
+      aid:
+        type: string
+      base:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
+    type: object
   github_com_qingyggg_aufer_biz_model_http_basic_article.PublishRequest:
     properties:
       content:
         type: string
       cover_url:
-        type: string
-      my_uid:
         type: string
       note:
         type: string
@@ -239,75 +168,24 @@ definitions:
       old_password:
         type: string
     type: object
-  github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsRequest:
-    properties:
-      aid:
-        type: string
-      cid:
-        type: string
-      degree:
-        description: 1:请求一级评论 2：请求二级评论
-        type: integer
-      my_uid:
-        type: string
-      type:
-        description: 1.根据热度 2.根据时间先后
-        type: integer
-    type: object
-  github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtRequest:
-    properties:
-      aid:
-        description: 文章的id
-        type: string
-      content:
-        description: 评论内容
-        type: string
-      degree:
-        description: 评论等级，只能为1或者2
-        type: integer
-      pid:
-        type: string
-    type: object
-  github_com_qingyggg_aufer_biz_model_http_interact_comment.DelRequest:
-    properties:
-      aid:
-        type: string
-      cid:
-        description: 评论id or "null"
-        type: string
-      type:
-        description: 1:删除文章所有评论 2:删除该评论以及所有子评论
-        type: integer
-    type: object
-  github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest:
-    properties:
-      type:
-        description: 1-Follow, 2-Unfollow
-        type: integer
-      uid:
-        type: string
-    type: object
-  relation.ListResponse:
+  github_com_qingyggg_aufer_biz_model_http_basic_user.User:
     properties:
       base:
-        $ref: '#/definitions/common.BaseResponse'
-      list:
-        description: User information list
-        items:
-          $ref: '#/definitions/user.UserBase'
-        type: array
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase'
+      info:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserInfo'
     type: object
-  user.UserActionResponse:
+  github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse:
     properties:
       base:
-        $ref: '#/definitions/common.BaseResponse'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       puid:
         description: 用以存储cookie的user主键
         type: integer
       uid:
         type: string
     type: object
-  user.UserBase:
+  github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase:
     properties:
       avatar:
         description: user avatar URL
@@ -329,7 +207,7 @@ definitions:
         description: hash id
         type: string
     type: object
-  user.UserInfo:
+  github_com_qingyggg_aufer_biz_model_http_basic_user.UserInfo:
     properties:
       follow_count:
         description: total number of people the user follows
@@ -347,29 +225,139 @@ definitions:
         description: number of articles published by user
         type: integer
     type: object
-  user.UserResponse:
+  github_com_qingyggg_aufer_biz_model_http_basic_user.UserResponse:
     properties:
       base:
-        $ref: '#/definitions/common.BaseResponse'
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       user:
         allOf:
-        - $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_cmd_user.User'
+        - $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.User'
         description: User Info
     type: object
+  github_com_qingyggg_aufer_biz_model_http_common.BaseResponse:
+    properties:
+      statusCode:
+        type: integer
+      statusMsg:
+        type: string
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_common.UploadResponse:
+    properties:
+      base:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
+      fileUrl:
+        description: 文件存储的URL
+        type: string
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsRequest:
+    properties:
+      aid:
+        type: string
+      cid:
+        type: string
+      degree:
+        description: 1:请求一级评论 2：请求二级评论
+        type: integer
+      my_uid:
+        type: string
+      type:
+        description: 1.根据热度 2.根据时间先后
+        type: integer
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsResponse:
+    properties:
+      base:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
+      list:
+        description: return comment list
+        items:
+          $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.Comment'
+        type: array
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtActionResponse:
+    properties:
+      base:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
+      cid:
+        type: string
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtRequest:
+    properties:
+      aid:
+        description: 文章的id
+        type: string
+      content:
+        description: 评论内容
+        type: string
+      degree:
+        description: 评论等级，只能为1或者2
+        type: integer
+      pid:
+        type: string
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_interact_comment.Comment:
+    properties:
+      aid:
+        description: 文章的id
+        type: string
+      child_num:
+        description: 该评论被回复的数量，当为一级评论时候，显示数量，二级的时候，显示为0
+        type: integer
+      cid:
+        type: string
+      content:
+        description: comment
+        type: string
+      create_date:
+        description: comment publication date, format mm-dd
+        type: string
+      favorite_count:
+        description: 该评论获得的点赞数量
+        type: integer
+      is_favorite:
+        type: boolean
+      replied_uid:
+        description: 如果该评论为某评论的回复，则该字段为被回复的用户的hashID
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase'
+        description: comment user information
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_interact_comment.DelRequest:
+    properties:
+      aid:
+        type: string
+      cid:
+        description: 评论id or "null"
+        type: string
+      type:
+        description: 1:删除文章所有评论 2:删除该评论以及所有子评论
+        type: integer
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest:
+    properties:
+      type:
+        description: 1-Follow, 2-Unfollow
+        type: integer
+      uid:
+        type: string
+    type: object
+  github_com_qingyggg_aufer_biz_model_http_social_relation.ListResponse:
+    properties:
+      base:
+        $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
+      list:
+        description: User information list
+        items:
+          $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase'
+        type: array
+    type: object
 info:
-  description: "Aufer API 文档"
-  version: "1.0.0"
-  title: "Aufer API"
-  contact:
-    email: "team@aufer.dev"
-basePath: "/"
-schemes:
-  - "https"
-  - "http"
-consumes:
-  - "application/json"
-produces:
-  - "application/json"
+  contact: {}
+  description: Aufer平台API服务
+  title: Aufer API
+  version: "1.0"
 paths:
   /ping:
     get:
@@ -398,51 +386,50 @@ paths:
         "200":
           description: 删除成功返回信息
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 删除已发布文章
       tags:
       - 文章操作
     get:
-      consumes:
-      - application/json
       description: 根据文章ID获取文章的详细内容
       parameters:
       - description: 文章ID
         in: query
-        name: Aid
+        name: aid
         required: true
-        type: integer
+        type: string
       - description: 作者用户ID
         in: query
-        name: Uid
-        type: integer
+        name: uid
+        required: true
+        type: string
       - description: 当前登录用户ID
         in: query
-        name: MyUid
-        type: integer
+        name: myUid
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: 文章详情返回信息
           schema:
-            $ref: '#/definitions/article.ArticleResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 获取文章详细信息
       tags:
       - 文章操作
@@ -463,15 +450,15 @@ paths:
         "200":
           description: 发布成功返回信息
           schema:
-            $ref: '#/definitions/article.PubOrModActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.PubOrModActionResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 发布新文章
       tags:
       - 文章操作
@@ -492,15 +479,15 @@ paths:
         "200":
           description: 修改成功返回信息
           schema:
-            $ref: '#/definitions/article.PubOrModActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.PubOrModActionResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 修改已发布文章
       tags:
       - 文章操作
@@ -522,15 +509,15 @@ paths:
         "200":
           description: 操作成功返回信息
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 收藏或取消收藏文章
       tags:
       - 文章操作
@@ -552,27 +539,27 @@ paths:
         "200":
           description: 成功响应
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "403":
           description: 禁止访问
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "404":
           description: 评论未找到
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 删除评论
       tags:
       - 评论
@@ -593,19 +580,19 @@ paths:
         "200":
           description: 成功响应，包含评论ID
           schema:
-            $ref: '#/definitions/comment.CmtActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtActionResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 创建新评论
       tags:
       - 评论
@@ -627,23 +614,23 @@ paths:
         "200":
           description: 成功响应
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "404":
           description: 评论未找到
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 点赞评论
       tags:
       - 评论
@@ -665,23 +652,23 @@ paths:
         "200":
           description: 成功响应，包含评论列表
           schema:
-            $ref: '#/definitions/comment.CardsResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "404":
           description: 评论未找到
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 获取评论列表
       tags:
       - 评论
@@ -703,15 +690,15 @@ paths:
         "200":
           description: 操作成功返回信息
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 点赞或取消点赞文章
       tags:
       - 文章操作
@@ -733,15 +720,15 @@ paths:
         "200":
           description: 文章列表返回信息
           schema:
-            $ref: '#/definitions/article.CardsResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.CardsResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 获取文章列表
       tags:
       - 文章操作
@@ -763,15 +750,15 @@ paths:
         "200":
           description: 操作成功返回信息
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 增加文章浏览计数
       tags:
       - 文章操作
@@ -793,53 +780,55 @@ paths:
         "200":
           description: 成功响应
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 关注或者取关用户
       tags:
       - 用户关系
   /relation/follow/list:
     get:
-      consumes:
-      - application/json
       description: 用户关注列表或者被关注列表
       parameters:
-      - description: 用户关注或被关注列表请求
-        in: body
-        name: request
+      - description: 要被关注的用户ID
+        in: query
+        name: uid
         required: true
-        schema:
-          $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest'
+        type: string
+      - description: 1关注，2被关注
+        in: query
+        name: type
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: 成功响应
           schema:
-            $ref: '#/definitions/relation.ListResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_social_relation.ListResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 用户关注列表或者被关注列表
       tags:
       - 用户关系
@@ -865,18 +854,16 @@ paths:
         "200":
           description: 成功返回文件信息
           schema:
-            $ref: '#/definitions/common.UploadResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.UploadResponse'
         "400":
           description: 请求错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 上传文件
       tags:
       - 文件上传接口
   /user:
     get:
-      consumes:
-      - application/json
       description: 根据用户ID获取用户的详细信息
       parameters:
       - description: 要查询的用户ID
@@ -894,15 +881,15 @@ paths:
         "200":
           description: 用户信息
           schema:
-            $ref: '#/definitions/user.UserResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 获取用户信息
       tags:
       - 用户管理
@@ -924,19 +911,19 @@ paths:
         "200":
           description: 登录成功返回的用户信息
           schema:
-            $ref: '#/definitions/user.UserActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 邮箱或密码错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 用户登录
       tags:
       - 用户管理
@@ -958,23 +945,23 @@ paths:
         "200":
           description: 资料修改成功返回的用户信息
           schema:
-            $ref: '#/definitions/user.UserActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 未授权，用户未登录
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "404":
           description: 用户不存在
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 修改用户资料
       tags:
       - 用户管理
@@ -996,23 +983,23 @@ paths:
         "200":
           description: 密码修改成功返回的用户信息
           schema:
-            $ref: '#/definitions/user.UserActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "401":
           description: 旧密码验证失败
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "404":
           description: 用户不存在
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 修改用户密码
       tags:
       - 用户管理
@@ -1034,20 +1021,23 @@ paths:
         "200":
           description: 注册成功返回的用户信息
           schema:
-            $ref: '#/definitions/user.UserActionResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse'
         "400":
           description: 请求参数错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "409":
           description: 邮箱已被注册
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
         "500":
           description: 服务器内部错误
           schema:
-            $ref: '#/definitions/common.BaseResponse'
+            $ref: '#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse'
       summary: 用户注册
       tags:
       - 用户管理
+schemes:
+- https
+- http
 swagger: "2.0"

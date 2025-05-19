@@ -2,12 +2,12 @@ package service
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/relation"
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	"github.com/qingyggg/aufer/biz/rpc"
 	relation_rpc "github.com/qingyggg/aufer/cmd/relation/rpc"
 	"github.com/qingyggg/aufer/cmd/user/dal/db"
 	"github.com/qingyggg/aufer/cmd/user/pack"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/relation"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 )
 
 func (s *UserService) User(req *user.UserRequest) (*user.User, error) {
@@ -33,7 +33,7 @@ func (s *UserService) User(req *user.UserRequest) (*user.User, error) {
 func getUser(ctx context.Context, queryUid string, myUid string, reqType uint8) (*user.User, error) {
 	var err error
 	var base *user.UserBase
-	var info *user.UserInfo
+	var info = new(user.UserInfo)
 	var qid string
 	if reqType == 3 {
 		qid = myUid

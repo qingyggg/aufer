@@ -1,14 +1,14 @@
 package rpc
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/article/articlehandler"
-	"github.com/qingyggg/aufer/biz/model/cmd/comment/commenthandler"
-	"github.com/qingyggg/aufer/biz/model/cmd/relation/relationhandler"
-	"github.com/qingyggg/aufer/biz/model/cmd/user/userhandler"
 	article_rpc "github.com/qingyggg/aufer/cmd/article/rpc"
 	cmt_rpc "github.com/qingyggg/aufer/cmd/comment/rpc"
 	relation_rpc "github.com/qingyggg/aufer/cmd/relation/rpc"
 	user_rpc "github.com/qingyggg/aufer/cmd/user/rpc"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article/articlehandler"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/comment/commenthandler"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/relation/relationhandler"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user/userhandler"
 )
 
 type RpcClients struct {

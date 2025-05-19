@@ -3,9 +3,9 @@ package utils
 import (
 	"context"
 	"fmt"
-	"github.com/cloudwego/kitex/pkg/klog"
-	mydal "github.com/qingyggg/aufer/cmd/user/dal"
+	"github.com/qingyggg/aufer/biz/dal"
 	"github.com/qingyggg/aufer/pkg/constants"
+	"log"
 	"net/url"
 	"strings"
 )
@@ -17,9 +17,9 @@ func URLconvert(path string) (fullURL string) {
 		return ""
 	}
 	arr := strings.Split(path, "/")
-	u, err := mydal.MyMinio.GetObjURL(ctx, arr[0], arr[1])
+	u, err := dal.MyDal.Mio.GetObjURL(ctx, arr[0], arr[1])
 	if err != nil {
-		klog.CtxInfof(ctx, err.Error())
+		log.Println(err.Error())
 		return ""
 	}
 	u.Scheme = "https"
@@ -37,7 +37,7 @@ func UrlConvertReverse(fullURL string) (path string) {
 	// 解析传入的 URL
 	u, err := url.Parse(fullURL)
 	if err != nil {
-		klog.Infof("解析URL失败: %s", err.Error())
+		log.Printf("解析URL失败: %s \n", err.Error())
 		return ""
 	}
 
@@ -46,14 +46,14 @@ func UrlConvertReverse(fullURL string) (path string) {
 	if strings.HasPrefix(urlPath, "/src/") {
 		urlPath = strings.TrimPrefix(urlPath, "/src/")
 	} else {
-		klog.Infof("URL路径无效: %s", fullURL)
+		log.Printf("URL路径无效: %s \n", fullURL)
 		return ""
 	}
 
 	// 将去掉前缀的路径拆分为 bucket 和 object
 	arr := strings.Split(urlPath, "/")
 	if len(arr) < 2 {
-		klog.Infof("URL格式无效: %s", fullURL)
+		log.Printf("URL格式无效: %s \n", fullURL)
 		return ""
 	}
 

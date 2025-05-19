@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/comment"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
 	rpcutil "github.com/qingyggg/aufer/cmd"
 	"github.com/qingyggg/aufer/cmd/comment/service"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/comment"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/common"
 	"github.com/qingyggg/aufer/pkg/errno"
 )
 

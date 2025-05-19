@@ -119,11 +119,11 @@ func ViewCountDel(ahashId string) error {
 	return err
 }
 
-// StartPeriodicSyncForViewCt 定期任务，每 60 分钟将 Redis 中的view count数据同步到 MySQL
+// StartPeriodicSyncForViewCt 定期任务，每一天将 Redis 中的view count数据同步到 MySQL
 func StartPeriodicSyncForViewCt() {
 	var av = mydal.Qdb.ArticleView
 	var avrd = mydal.MyRedis.RdbView
-	ticker := time.NewTicker(time.Hour)
+	ticker := time.NewTicker(24 * time.Hour)
 	defer ticker.Stop()
 
 	for range ticker.C {

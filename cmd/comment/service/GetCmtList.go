@@ -1,11 +1,11 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/comment"
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	"github.com/qingyggg/aufer/biz/rpc"
 	"github.com/qingyggg/aufer/cmd/comment/dal/db"
 	user_rpc "github.com/qingyggg/aufer/cmd/user/rpc"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/comment"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 	"github.com/qingyggg/aufer/pkg/utils"
 	"sync"
 )

@@ -9,8 +9,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/hertz-contrib/pprof"
 	"github.com/hertz-contrib/reverseproxy"
-	"github.com/qingyggg/aufer/biz/dal/minio"
-	"github.com/qingyggg/aufer/biz/dal/redis"
+	"github.com/qingyggg/aufer/biz/dal"
 	"github.com/qingyggg/aufer/biz/mw/jwt"
 	"github.com/qingyggg/aufer/biz/mw/logger"
 	"github.com/qingyggg/aufer/biz/rpc"
@@ -57,8 +56,7 @@ func init() {
 		logger.InitLogger()
 	}
 	jwt.Init()
-	minio.InitForHertz()
-	redis.InitRedisForHertz()
+	dal.InitForHertz()
 	rpc.InitRpc() //初始化rpc连接
 	tracer.InitJaeger(constants.ApiService)
 }

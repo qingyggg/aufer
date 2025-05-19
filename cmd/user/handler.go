@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	rpcutil "github.com/qingyggg/aufer/cmd"
 	"github.com/qingyggg/aufer/cmd/user/service"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 	"github.com/qingyggg/aufer/pkg/errno"
 )
 

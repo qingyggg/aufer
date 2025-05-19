@@ -13,8 +13,6 @@ type MyMinio struct {
 	mc *minio.Client
 }
 
-var MyMio *MyMinio
-
 // Init 初始化 MinIO 客户端
 func Init() (error, *MyMinio) {
 	var err error
@@ -30,13 +28,13 @@ func Init() (error, *MyMinio) {
 	myMinio.mc = mc
 	return nil, myMinio
 }
-func InitForHertz() {
-	var err error
-	err, MyMio = Init() //初始存储服务
+func InitForHertz() *MyMinio {
+	err, MyMio := Init() //初始存储服务
 	if err != nil {
 		hlog.Fatal(err)
 	}
 	MyMio.InitImgBucket()
+	return MyMio
 }
 
 func (m *MyMinio) InitImgBucket() {

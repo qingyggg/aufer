@@ -2,8 +2,9 @@ package rpc
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/article"
-	"github.com/qingyggg/aufer/biz/model/cmd/article/articlehandler"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article/articlehandler"
+
 	rpc_util "github.com/qingyggg/aufer/cmd"
 )
 

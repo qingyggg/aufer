@@ -5,7 +5,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/retry"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
-	"github.com/qingyggg/aufer/biz/model/cmd/article/articlehandler"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article/articlehandler"
 	"github.com/qingyggg/aufer/pkg/constants"
 	"github.com/qingyggg/aufer/pkg/middleware"
 	"time"

@@ -5,14 +5,15 @@ package article
 import (
 	"context"
 	"github.com/qingyggg/aufer/biz/rpc"
+	rpcpack "github.com/qingyggg/aufer/biz/rpc/pack"
 	article_rpc "github.com/qingyggg/aufer/cmd/article/rpc"
 	"github.com/qingyggg/aufer/pkg/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	article_cmd "github.com/qingyggg/aufer/biz/model/cmd/article"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
 	"github.com/qingyggg/aufer/biz/model/http/basic/article"
+	common "github.com/qingyggg/aufer/biz/model/http/common"
+	articlecmd "github.com/qingyggg/aufer/kitex_gen/cmd/article"
 )
 
 // PublishAction 发布文章接口
@@ -22,20 +23,20 @@ import (
 // @Accept json
 // @Produce json
 // @Param data body article.PublishRequest true "文章发布请求参数"
-// @Success 200 {object} article_cmd.PubOrModActionResponse "发布成功返回信息"
+// @Success 200 {object} article.PubOrModActionResponse "发布成功返回信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /publish [POST]
 func PublishAction(ctx context.Context, c *app.RequestContext) {
 	var err error
 	req := new(article.PublishRequest)
-	resp := new(article_cmd.PubOrModActionResponse)
+	resp := new(article.PubOrModActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	aid, err := article_rpc.PublishAction(rpc.Clients.ArticleClient, ctx, &article_cmd.PublishRequest{
+	aid, err := article_rpc.PublishAction(rpc.Clients.ArticleClient, ctx, &articlecmd.PublishRequest{
 		Title:    req.Title,
 		Content:  req.Content,
 		CoverUrl: req.CoverUrl,
@@ -58,25 +59,26 @@ func PublishAction(ctx context.Context, c *app.RequestContext) {
 // @Accept json
 // @Produce json
 // @Param data body article.PublishRequest true "文章修改请求参数"
-// @Success 200 {object} article_cmd.PubOrModActionResponse "修改成功返回信息"
+// @Success 200 {object} article.PubOrModActionResponse "修改成功返回信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /publish [PUT]
 func PublishModifyAction(ctx context.Context, c *app.RequestContext) {
 	var err error
-	req := new(article.PublishRequest)
-	resp := new(article_cmd.PubOrModActionResponse)
+	req := new(article.ModRequest)
+	resp := new(article.PubOrModActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	aid, err := article_rpc.ArticleModifyAction(rpc.Clients.ArticleClient, ctx, &article_cmd.ModRequest{
+	aid, err := article_rpc.ArticleModifyAction(rpc.Clients.ArticleClient, ctx, &articlecmd.ModRequest{
 		Title:    req.Title,
 		Content:  req.Content,
 		CoverUrl: req.CoverUrl,
 		Note:     req.Note,
 		Uid:      utils.GetUid(c, ctx),
+		Aid:      req.Aid,
 	})
 	if err != nil {
 		utils.ErrResp(c, err)
@@ -107,7 +109,7 @@ func PublishDelAction(ctx context.Context, c *app.RequestContext) {
 		utils.ErrResp(c, err)
 		return
 	}
-	err = article_rpc.ArticleDelAction(rpc.Clients.ArticleClient, ctx, &article_cmd.DelRequest{
+	err = article_rpc.ArticleDelAction(rpc.Clients.ArticleClient, ctx, &articlecmd.DelRequest{
 		Aid: req.Aid,
 		Uid: utils.GetUid(c, ctx),
 	})
@@ -123,25 +125,24 @@ func PublishDelAction(ctx context.Context, c *app.RequestContext) {
 // @Summary 获取文章详细信息
 // @Description 根据文章ID获取文章的详细内容
 // @Tags 文章操作
-// @Accept json
 // @Produce json
-// @Param Aid query int true "文章ID"
-// @Param Uid query int false "作者用户ID"
-// @Param MyUid query int false "当前登录用户ID"
-// @Success 200 {object} article_cmd.ArticleResponse "文章详情返回信息"
+// @Param aid query string true "文章ID"
+// @Param uid query string true "作者用户ID"
+// @Param myUid query string false "当前登录用户ID"
+// @Success 200 {object} article.ArticleResponse "文章详情返回信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /publish [GET]
 func PublishDetail(ctx context.Context, c *app.RequestContext) {
 	var err error
 	req := new(article.DetailRequest)
-	resp := new(article_cmd.ArticleResponse)
+	resp := new(article.ArticleResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	ar, err := article_rpc.ArticleDetail(rpc.Clients.ArticleClient, ctx, &article_cmd.DetailRequest{
+	ar, err := article_rpc.ArticleDetail(rpc.Clients.ArticleClient, ctx, &articlecmd.DetailRequest{
 		Aid:   req.Aid,
 		Uid:   req.Uid,
 		MyUid: req.MyUid,
@@ -151,7 +152,7 @@ func PublishDetail(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp.Base = utils.BuildBaseResp(nil)
-	resp.Article = ar
+	resp.Article = rpcpack.ConvertArticle(ar)
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -162,25 +163,25 @@ func PublishDetail(ctx context.Context, c *app.RequestContext) {
 // @Accept json
 // @Produce json
 // @Param data body article.CardsRequest true "文章列表查询参数"
-// @Success 200 {object} article_cmd.CardsResponse "文章列表返回信息"
+// @Success 200 {object} article.CardsResponse "文章列表返回信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /publish/list [POST]
 func PublishList(ctx context.Context, c *app.RequestContext) {
 	var err error
 	req := new(article.CardsRequest)
-	resp := new(article_cmd.CardsResponse)
+	resp := new(article.CardsResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	list, err := article_rpc.ArticleList(rpc.Clients.ArticleClient, ctx, &article_cmd.CardsRequest{
+	list, err := article_rpc.ArticleList(rpc.Clients.ArticleClient, ctx, &articlecmd.CardsRequest{
 		Uid:         req.Uid,
 		Offset:      req.Offset,
 		Tags:        req.Tags,        //文章标签
 		Category:    req.Category,    //文章种类
-		Type:        req.Type,        //1->请求最新的 2->请求最热门的
+		Type:        req.ReqType,     //1->请求最新的 2->请求最热门的
 		IsCollected: req.IsCollected, //是否为该用户收藏的文章
 		AuthorId:    req.AuthorId,    //作者的id
 	})
@@ -189,7 +190,7 @@ func PublishList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp.Base = utils.BuildBaseResp(nil)
-	resp.List = list
+	resp.List = rpcpack.ConvertArticleCards(list)
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -242,7 +243,7 @@ func PublishCollect(ctx context.Context, c *app.RequestContext) {
 		utils.ErrResp(c, err)
 		return
 	}
-	err = article_rpc.ArticleCollect(rpc.Clients.ArticleClient, ctx, &article_cmd.CollectRequest{Aid: req.Aid, Uid: utils.GetUid(c, ctx), Type: req.Type})
+	err = article_rpc.ArticleCollect(rpc.Clients.ArticleClient, ctx, &articlecmd.CollectRequest{Aid: req.Aid, Uid: utils.GetUid(c, ctx), Type: req.Type})
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
@@ -271,7 +272,7 @@ func PublishFavorite(ctx context.Context, c *app.RequestContext) {
 		utils.ErrResp(c, err)
 		return
 	}
-	err = article_rpc.ArticleFavorite(rpc.Clients.ArticleClient, ctx, &article_cmd.FavoriteRequest{Aid: req.Aid, Uid: utils.GetUid(c, ctx), Type: req.Type})
+	err = article_rpc.ArticleFavorite(rpc.Clients.ArticleClient, ctx, &articlecmd.FavoriteRequest{Aid: req.Aid, Uid: utils.GetUid(c, ctx), Type: req.Type})
 	if err != nil {
 		utils.ErrResp(c, err)
 		return

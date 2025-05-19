@@ -4,18 +4,23 @@
 
 package orm_gen
 
+import (
+	"time"
+)
+
 const TableNameUser = "users"
 
 // User 用户表
 type User struct {
-	ID              int64  `gorm:"column:id;primaryKey;autoIncrement:true;comment:用户ID" json:"id"`             // 用户ID
-	HashID          []byte `gorm:"column:hash_id;not null;comment:用户的hash值" json:"hash_id"`                    // 用户的hash值
-	UserName        string `gorm:"column:user_name;not null;comment:用户名" json:"user_name"`                     // 用户名
-	Password        string `gorm:"column:password;not null;comment:用户密码" json:"password"`                      // 用户密码
-	Avatar          string `gorm:"column:avatar;not null;comment:用户头像" json:"avatar"`                          // 用户头像
-	BackgroundImage string `gorm:"column:background_image;not null;comment:用户个人页顶部大图" json:"background_image"` // 用户个人页顶部大图
-	Signature       string `gorm:"column:signature;not null;comment:个人简介" json:"signature"`                    // 个人简介
-	Email           string `gorm:"column:email;not null" json:"email"`
+	ID              int64     `gorm:"column:id;primaryKey;autoIncrement:true;comment:用户ID" json:"id"`                 // 用户ID
+	HashID          []byte    `gorm:"column:hash_id;not null;comment:用户的hash值" json:"hash_id"`                        // 用户的hash值
+	UserName        string    `gorm:"column:user_name;not null;comment:用户名" json:"user_name"`                         // 用户名
+	Password        string    `gorm:"column:password;not null;comment:用户密码" json:"password"`                          // 用户密码
+	Avatar          string    `gorm:"column:avatar;not null;comment:用户头像" json:"avatar"`                              // 用户头像
+	BackgroundImage string    `gorm:"column:background_image;not null;comment:用户个人页顶部大图" json:"background_image"`     // 用户个人页顶部大图
+	Signature       string    `gorm:"column:signature;not null;comment:个人简介" json:"signature"`                        // 个人简介
+	Email           string    `gorm:"column:email;not null;comment:邮箱" json:"email"`                                  // 邮箱
+	CreatedAt       time.Time `gorm:"column:created_at;default:current_timestamp();comment:用户创建时间" json:"created_at"` // 用户创建时间
 }
 
 // TableName User's table name

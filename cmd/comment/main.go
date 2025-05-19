@@ -7,9 +7,10 @@ import (
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
-	comment "github.com/qingyggg/aufer/biz/model/cmd/comment/commenthandler"
 	"github.com/qingyggg/aufer/biz/rpc"
 	mydal "github.com/qingyggg/aufer/cmd/comment/dal"
+	comment "github.com/qingyggg/aufer/kitex_gen/cmd/comment/commenthandler"
+
 	"github.com/qingyggg/aufer/pkg/bound"
 	"github.com/qingyggg/aufer/pkg/constants"
 	"github.com/qingyggg/aufer/pkg/middleware"

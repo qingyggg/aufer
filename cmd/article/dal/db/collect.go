@@ -3,7 +3,6 @@ package db
 import (
 	"github.com/qingyggg/aufer/biz/dal/redis"
 	"github.com/qingyggg/aufer/biz/model/orm_gen"
-	"github.com/qingyggg/aufer/biz/model/query"
 	mydal "github.com/qingyggg/aufer/cmd/article/dal"
 	"github.com/qingyggg/aufer/pkg/utils"
 	"sync"
@@ -105,7 +104,7 @@ func ACollectCtGet(aHashId string) (error, int64) {
 }
 
 func aCollectCtGet(aHashId string) (error, int64) {
-	var ca = query.ArticleCollect
+	var ca = mydal.Qdb.ArticleCollect
 	count, err := ca.Where(ca.ArticleID.Eq(utils.ConvertStringHashToByte(aHashId))).Count()
 	if err != nil {
 		return err, 0
@@ -164,7 +163,7 @@ func ACollectCtGetByAids(aHashIds []string) (error, map[string]int64) {
 			}
 
 			// 查询MySQL
-			var ca = query.ArticleCollect
+			var ca = mydal.Qdb.ArticleCollect
 			var results []struct {
 				ArticleID []byte
 				Count     int64

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/article"
 	"github.com/qingyggg/aufer/biz/model/orm_gen"
 	"github.com/qingyggg/aufer/cmd/article/dal/db"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article"
 	"github.com/qingyggg/aufer/pkg/constants"
 	"github.com/qingyggg/aufer/pkg/utils"
 	"time"

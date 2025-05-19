@@ -31,9 +31,6 @@ const docTemplate = `{
         "/publish": {
             "get": {
                 "description": "根据文章ID获取文章的详细内容",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -43,22 +40,23 @@ const docTemplate = `{
                 "summary": "获取文章详细信息",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "文章ID",
-                        "name": "Aid",
+                        "name": "aid",
                         "in": "query",
                         "required": true
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "作者用户ID",
-                        "name": "Uid",
-                        "in": "query"
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "当前登录用户ID",
-                        "name": "MyUid",
+                        "name": "myUid",
                         "in": "query"
                     }
                 ],
@@ -66,19 +64,19 @@ const docTemplate = `{
                     "200": {
                         "description": "文章详情返回信息",
                         "schema": {
-                            "$ref": "#/definitions/article.ArticleResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -110,19 +108,19 @@ const docTemplate = `{
                     "200": {
                         "description": "修改成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/article.PubOrModActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.PubOrModActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -154,19 +152,19 @@ const docTemplate = `{
                     "200": {
                         "description": "发布成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/article.PubOrModActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.PubOrModActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -198,19 +196,19 @@ const docTemplate = `{
                     "200": {
                         "description": "删除成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -244,19 +242,19 @@ const docTemplate = `{
                     "200": {
                         "description": "操作成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -290,25 +288,25 @@ const docTemplate = `{
                     "200": {
                         "description": "成功响应，包含评论ID",
                         "schema": {
-                            "$ref": "#/definitions/comment.CmtActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -340,37 +338,37 @@ const docTemplate = `{
                     "200": {
                         "description": "成功响应",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "403": {
                         "description": "禁止访问",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "404": {
                         "description": "评论未找到",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -404,31 +402,31 @@ const docTemplate = `{
                     "200": {
                         "description": "成功响应",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "404": {
                         "description": "评论未找到",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -462,31 +460,31 @@ const docTemplate = `{
                     "200": {
                         "description": "成功响应，包含评论列表",
                         "schema": {
-                            "$ref": "#/definitions/comment.CardsResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "404": {
                         "description": "评论未找到",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -520,19 +518,19 @@ const docTemplate = `{
                     "200": {
                         "description": "操作成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -566,19 +564,19 @@ const docTemplate = `{
                     "200": {
                         "description": "文章列表返回信息",
                         "schema": {
-                            "$ref": "#/definitions/article.CardsResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.CardsResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -612,19 +610,19 @@ const docTemplate = `{
                     "200": {
                         "description": "操作成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -658,25 +656,25 @@ const docTemplate = `{
                     "200": {
                         "description": "成功响应",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -685,9 +683,6 @@ const docTemplate = `{
         "/relation/follow/list": {
             "get": {
                 "description": "用户关注列表或者被关注列表",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -697,38 +692,43 @@ const docTemplate = `{
                 "summary": "用户关注列表或者被关注列表",
                 "parameters": [
                     {
-                        "description": "用户关注或被关注列表请求",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_social_relation.FollowRequest"
-                        }
+                        "type": "string",
+                        "description": "要被关注的用户ID",
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "1关注，2被关注",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "成功响应",
                         "schema": {
-                            "$ref": "#/definitions/relation.ListResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_social_relation.ListResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -767,13 +767,13 @@ const docTemplate = `{
                     "200": {
                         "description": "成功返回文件信息",
                         "schema": {
-                            "$ref": "#/definitions/common.UploadResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.UploadResponse"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -782,9 +782,6 @@ const docTemplate = `{
         "/user": {
             "get": {
                 "description": "根据用户ID获取用户的详细信息",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -811,19 +808,19 @@ const docTemplate = `{
                     "200": {
                         "description": "用户信息",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -857,25 +854,25 @@ const docTemplate = `{
                     "200": {
                         "description": "登录成功返回的用户信息",
                         "schema": {
-                            "$ref": "#/definitions/user.UserActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "邮箱或密码错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -909,31 +906,31 @@ const docTemplate = `{
                     "200": {
                         "description": "资料修改成功返回的用户信息",
                         "schema": {
-                            "$ref": "#/definitions/user.UserActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "未授权，用户未登录",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "404": {
                         "description": "用户不存在",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -967,31 +964,31 @@ const docTemplate = `{
                     "200": {
                         "description": "密码修改成功返回的用户信息",
                         "schema": {
-                            "$ref": "#/definitions/user.UserActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "401": {
                         "description": "旧密码验证失败",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "404": {
                         "description": "用户不存在",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -1025,25 +1022,25 @@ const docTemplate = `{
                     "200": {
                         "description": "注册成功返回的用户信息",
                         "schema": {
-                            "$ref": "#/definitions/user.UserActionResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse"
                         }
                     },
                     "400": {
                         "description": "请求参数错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "409": {
                         "description": "邮箱已被注册",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     },
                     "500": {
                         "description": "服务器内部错误",
                         "schema": {
-                            "$ref": "#/definitions/common.BaseResponse"
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                         }
                     }
                 }
@@ -1051,32 +1048,54 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "article.Article": {
+        "favorite.FavoriteRequest": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "cid": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.Aid": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.Article": {
             "type": "object",
             "properties": {
                 "author": {
-                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_cmd_user.User"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.User"
                 },
                 "content": {
                     "type": "string"
                 },
                 "info": {
-                    "$ref": "#/definitions/article.ArticleInfo"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleInfo"
                 }
             }
         },
-        "article.ArticleCard": {
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleCard": {
             "type": "object",
             "properties": {
                 "author": {
-                    "$ref": "#/definitions/user.UserBase"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase"
                 },
                 "info": {
-                    "$ref": "#/definitions/article.ArticleInfo"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleInfo"
                 }
             }
         },
-        "article.ArticleInfo": {
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleInfo": {
             "type": "object",
             "properties": {
                 "aid": {
@@ -1120,167 +1139,14 @@ const docTemplate = `{
                 }
             }
         },
-        "article.ArticleResponse": {
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleResponse": {
             "type": "object",
             "properties": {
                 "article": {
-                    "$ref": "#/definitions/article.Article"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.Article"
                 },
                 "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                }
-            }
-        },
-        "article.CardsResponse": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                },
-                "list": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/article.ArticleCard"
-                    }
-                }
-            }
-        },
-        "article.PubOrModActionResponse": {
-            "type": "object",
-            "properties": {
-                "aid": {
-                    "type": "string"
-                },
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                }
-            }
-        },
-        "comment.CardsResponse": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                },
-                "list": {
-                    "description": "return comment list",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/comment.Comment"
-                    }
-                }
-            }
-        },
-        "comment.CmtActionResponse": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                },
-                "cid": {
-                    "type": "string"
-                }
-            }
-        },
-        "comment.Comment": {
-            "type": "object",
-            "properties": {
-                "aid": {
-                    "description": "文章的id",
-                    "type": "string"
-                },
-                "child_num": {
-                    "description": "该评论被回复的数量，当为一级评论时候，显示数量，二级的时候，显示为0",
-                    "type": "integer"
-                },
-                "cid": {
-                    "type": "string"
-                },
-                "content": {
-                    "description": "comment",
-                    "type": "string"
-                },
-                "create_date": {
-                    "description": "comment publication date, format mm-dd",
-                    "type": "string"
-                },
-                "favorite_count": {
-                    "description": "该评论获得的点赞数量",
-                    "type": "integer"
-                },
-                "is_favorite": {
-                    "type": "boolean"
-                },
-                "replied_uid": {
-                    "description": "如果该评论为某评论的回复，则该字段为被回复的用户的hashID",
-                    "type": "string"
-                },
-                "user": {
-                    "description": "comment user information",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/user.UserBase"
-                        }
-                    ]
-                }
-            }
-        },
-        "common.BaseResponse": {
-            "type": "object",
-            "properties": {
-                "serviceTime": {
-                    "type": "integer"
-                },
-                "statusCode": {
-                    "type": "integer"
-                },
-                "statusMsg": {
-                    "type": "string"
-                }
-            }
-        },
-        "common.UploadResponse": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                },
-                "fileUrl": {
-                    "description": "文件存储的URL",
-                    "type": "string"
-                }
-            }
-        },
-        "favorite.FavoriteRequest": {
-            "type": "object",
-            "properties": {
-                "aid": {
-                    "type": "string"
-                },
-                "cid": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github_com_qingyggg_aufer_biz_model_cmd_user.User": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/user.UserBase"
-                },
-                "info": {
-                    "$ref": "#/definitions/user.UserInfo"
-                }
-            }
-        },
-        "github_com_qingyggg_aufer_biz_model_http_basic_article.Aid": {
-            "type": "object",
-            "properties": {
-                "aid": {
-                    "type": "string"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                 }
             }
         },
@@ -1319,6 +1185,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.CardsResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_article.ArticleCard"
+                    }
+                }
+            }
+        },
         "github_com_qingyggg_aufer_biz_model_http_basic_article.CollectRequest": {
             "type": "object",
             "properties": {
@@ -1346,6 +1226,17 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_qingyggg_aufer_biz_model_http_basic_article.PubOrModActionResponse": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "type": "string"
+                },
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                }
+            }
+        },
         "github_com_qingyggg_aufer_biz_model_http_basic_article.PublishRequest": {
             "type": "object",
             "properties": {
@@ -1353,9 +1244,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "cover_url": {
-                    "type": "string"
-                },
-                "my_uid": {
                     "type": "string"
                 },
                 "note": {
@@ -1412,6 +1300,127 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.User": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase"
+                },
+                "info": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserInfo"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.UserActionResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                },
+                "puid": {
+                    "description": "用以存储cookie的user主键",
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "user avatar URL",
+                    "type": "string"
+                },
+                "background_image": {
+                    "description": "image at the top of the user's personal page",
+                    "type": "string"
+                },
+                "created_date": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "user name",
+                    "type": "string"
+                },
+                "signature": {
+                    "description": "user profile",
+                    "type": "string"
+                },
+                "uid": {
+                    "description": "hash id",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.UserInfo": {
+            "type": "object",
+            "properties": {
+                "follow_count": {
+                    "description": "total number of people the user follows",
+                    "type": "integer"
+                },
+                "follower_count": {
+                    "description": "total number of fans",
+                    "type": "integer"
+                },
+                "is_follow": {
+                    "description": "whether the currently logged-in user follows this user",
+                    "type": "boolean"
+                },
+                "total_favorited": {
+                    "description": "number of articles for articles published by user",
+                    "type": "integer"
+                },
+                "work_count": {
+                    "description": "number of articles published by user",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_basic_user.UserResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                },
+                "user": {
+                    "description": "User Info",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.User"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_common.BaseResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "statusMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_common.UploadResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                },
+                "fileUrl": {
+                    "description": "文件存储的URL",
+                    "type": "string"
+                }
+            }
+        },
         "github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsRequest": {
             "type": "object",
             "properties": {
@@ -1434,6 +1443,32 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_qingyggg_aufer_biz_model_http_interact_comment.CardsResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                },
+                "list": {
+                    "description": "return comment list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_interact_comment.Comment"
+                    }
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtActionResponse": {
+            "type": "object",
+            "properties": {
+                "base": {
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
+                },
+                "cid": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_qingyggg_aufer_biz_model_http_interact_comment.CmtRequest": {
             "type": "object",
             "properties": {
@@ -1451,6 +1486,49 @@ const docTemplate = `{
                 },
                 "pid": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_qingyggg_aufer_biz_model_http_interact_comment.Comment": {
+            "type": "object",
+            "properties": {
+                "aid": {
+                    "description": "文章的id",
+                    "type": "string"
+                },
+                "child_num": {
+                    "description": "该评论被回复的数量，当为一级评论时候，显示数量，二级的时候，显示为0",
+                    "type": "integer"
+                },
+                "cid": {
+                    "type": "string"
+                },
+                "content": {
+                    "description": "comment",
+                    "type": "string"
+                },
+                "create_date": {
+                    "description": "comment publication date, format mm-dd",
+                    "type": "string"
+                },
+                "favorite_count": {
+                    "description": "该评论获得的点赞数量",
+                    "type": "integer"
+                },
+                "is_favorite": {
+                    "type": "boolean"
+                },
+                "replied_uid": {
+                    "description": "如果该评论为某评论的回复，则该字段为被回复的用户的hashID",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "comment user information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase"
+                        }
+                    ]
                 }
             }
         },
@@ -1482,105 +1560,18 @@ const docTemplate = `{
                 }
             }
         },
-        "relation.ListResponse": {
+        "github_com_qingyggg_aufer_biz_model_http_social_relation.ListResponse": {
             "type": "object",
             "properties": {
                 "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
+                    "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_common.BaseResponse"
                 },
                 "list": {
                     "description": "User information list",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/user.UserBase"
+                        "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_http_basic_user.UserBase"
                     }
-                }
-            }
-        },
-        "user.UserActionResponse": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                },
-                "puid": {
-                    "description": "用以存储cookie的user主键",
-                    "type": "integer"
-                },
-                "uid": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.UserBase": {
-            "type": "object",
-            "properties": {
-                "avatar": {
-                    "description": "user avatar URL",
-                    "type": "string"
-                },
-                "background_image": {
-                    "description": "image at the top of the user's personal page",
-                    "type": "string"
-                },
-                "created_date": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "description": "user name",
-                    "type": "string"
-                },
-                "signature": {
-                    "description": "user profile",
-                    "type": "string"
-                },
-                "uid": {
-                    "description": "hash id",
-                    "type": "string"
-                }
-            }
-        },
-        "user.UserInfo": {
-            "type": "object",
-            "properties": {
-                "follow_count": {
-                    "description": "total number of people the user follows",
-                    "type": "integer"
-                },
-                "follower_count": {
-                    "description": "total number of fans",
-                    "type": "integer"
-                },
-                "is_follow": {
-                    "description": "whether the currently logged-in user follows this user",
-                    "type": "boolean"
-                },
-                "total_favorited": {
-                    "description": "number of articles for articles published by user",
-                    "type": "integer"
-                },
-                "work_count": {
-                    "description": "number of articles published by user",
-                    "type": "integer"
-                }
-            }
-        },
-        "user.UserResponse": {
-            "type": "object",
-            "properties": {
-                "base": {
-                    "$ref": "#/definitions/common.BaseResponse"
-                },
-                "user": {
-                    "description": "User Info",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/github_com_qingyggg_aufer_biz_model_cmd_user.User"
-                        }
-                    ]
                 }
             }
         }
@@ -1589,12 +1580,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
-	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	BasePath:         "/",
+	Schemes:          []string{"https", "http"},
+	Title:            "Aufer API",
+	Description:      "Aufer平台API服务",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

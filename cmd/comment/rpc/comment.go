@@ -2,9 +2,9 @@ package rpc
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/comment"
-	"github.com/qingyggg/aufer/biz/model/cmd/comment/commenthandler"
 	rpc_util "github.com/qingyggg/aufer/cmd"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/comment"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/comment/commenthandler"
 )
 
 func CommentAction(cc commenthandler.Client, ctx context.Context, req *comment.CmtRequest) (string, error) {

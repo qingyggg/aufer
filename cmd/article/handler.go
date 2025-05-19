@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/article"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
 	rpcutil "github.com/qingyggg/aufer/cmd"
 	"github.com/qingyggg/aufer/cmd/article/service"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/common"
 	"github.com/qingyggg/aufer/pkg/errno"
 )
 
@@ -14,6 +14,7 @@ type ArticleHandlerImpl struct{}
 
 // PublishAction implements the ArticleHandlerImpl interface.
 func (s *ArticleHandlerImpl) PublishAction(ctx context.Context, req *article.PublishRequest) (resp *article.PubOrModActionResponse, err error) {
+	resp = new(article.PubOrModActionResponse)
 	err, aid := service.NewArticleService(ctx).ArticleCreate(req)
 	if err != nil {
 		resp.Base = rpcutil.BuildBaseResp(err)
@@ -26,6 +27,7 @@ func (s *ArticleHandlerImpl) PublishAction(ctx context.Context, req *article.Pub
 
 // ArticleModifyAction implements the ArticleHandlerImpl interface.
 func (s *ArticleHandlerImpl) ArticleModifyAction(ctx context.Context, req *article.ModRequest) (resp *article.PubOrModActionResponse, err error) {
+	resp = new(article.PubOrModActionResponse)
 	err = service.NewArticleService(ctx).ArticleModify(req)
 	if err != nil {
 		resp.Base = rpcutil.BuildBaseResp(err)
@@ -48,6 +50,7 @@ func (s *ArticleHandlerImpl) ArticleDelAction(ctx context.Context, req *article.
 
 // ArticleList implements the ArticleHandlerImpl interface.
 func (s *ArticleHandlerImpl) ArticleList(ctx context.Context, req *article.CardsRequest) (resp *article.CardsResponse, err error) {
+	resp = new(article.CardsResponse)
 	list, err := service.NewArticleService(ctx).ArticleList(req)
 	if err != nil {
 		resp.Base = rpcutil.BuildBaseResp(err)
@@ -60,6 +63,7 @@ func (s *ArticleHandlerImpl) ArticleList(ctx context.Context, req *article.Cards
 
 // ArticleDetail implements the ArticleHandlerImpl interface.
 func (s *ArticleHandlerImpl) ArticleDetail(ctx context.Context, req *article.DetailRequest) (resp *article.ArticleResponse, err error) {
+	resp = new(article.ArticleResponse)
 	detail, err := service.NewArticleService(ctx).ArticleDetail(req)
 	if err != nil {
 		resp.Base = rpcutil.BuildBaseResp(err)
@@ -105,6 +109,7 @@ func (s *ArticleHandlerImpl) ArticleFavorite(ctx context.Context, req *article.F
 
 // ArticleExist implements the ArticleHandlerImpl interface.
 func (s *ArticleHandlerImpl) ArticleExist(ctx context.Context, req *article.Aid) (resp *article.ArticleExistResponse, err error) {
+	resp = new(article.ArticleExistResponse)
 	exist, err := service.NewArticleService(ctx).ArticleExist(req)
 	if err != nil {
 		resp.Base = rpcutil.BuildBaseResp(err)

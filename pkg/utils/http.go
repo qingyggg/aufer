@@ -6,8 +6,9 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/qingyggg/aufer/biz/dal/redis"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
+	"github.com/qingyggg/aufer/biz/dal"
+	"github.com/qingyggg/aufer/biz/model/http/common"
+
 	"github.com/qingyggg/aufer/biz/rpc"
 	user_rpc "github.com/qingyggg/aufer/cmd/user/rpc"
 	"github.com/qingyggg/aufer/pkg/errno"
@@ -48,7 +49,7 @@ var fatalMsg = "获取Uid发生错误"
 // GetUid get uid from jwt
 func GetUid(c *app.RequestContext, ctx context.Context) string {
 	puid, exist := c.Get("current_user_id")
-	rdbUser := redis.Mrs.RdbUser
+	rdbUser := dal.MyDal.Mrs.RdbUser
 	if exist {
 		//1.查找redis，找不到查找数据库，并且缓存进redis中
 		err, ex := rdbUser.UHashIdExist(puid.(int64))

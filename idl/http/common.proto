@@ -1,0 +1,13 @@
+syntax = "proto3";
+package http.common;
+option go_package = "http/common";
+
+message BaseResponse{
+  int32 statusCode = 1;
+  string statusMsg = 2;
+}
+// 文件上传响应消息
+message UploadResponse {
+  BaseResponse base=1;
+  string fileUrl = 2;  // 文件存储的URL
+}

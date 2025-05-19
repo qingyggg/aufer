@@ -7,7 +7,8 @@ import (
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/hertz-contrib/jwt"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
+	"github.com/qingyggg/aufer/biz/model/http/common"
+
 	"github.com/qingyggg/aufer/biz/model/http/basic/user"
 	"github.com/qingyggg/aufer/biz/rpc"
 	user_rpc "github.com/qingyggg/aufer/cmd/user/rpc"
@@ -19,7 +20,7 @@ import (
 
 var (
 	JwtMiddleware *jwt.HertzJWTMiddleware
-	identity      = "uid"
+	identity      = "puid"
 )
 
 func Init() {
@@ -42,8 +43,8 @@ func Init() {
 				return nil, err
 			}
 			c.Set("hasErr", false)
-			c.Set("puid", puid)
 			c.Set("uid", uid)
+			c.Set("puid", puid)
 			return puid, nil
 		},
 		// Set the payload in the token

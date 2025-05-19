@@ -35,6 +35,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.BackgroundImage = field.NewString(tableName, "background_image")
 	_user.Signature = field.NewString(tableName, "signature")
 	_user.Email = field.NewString(tableName, "email")
+	_user.CreatedAt = field.NewTime(tableName, "created_at")
 
 	_user.fillFieldMap()
 
@@ -53,7 +54,8 @@ type user struct {
 	Avatar          field.String // 用户头像
 	BackgroundImage field.String // 用户个人页顶部大图
 	Signature       field.String // 个人简介
-	Email           field.String
+	Email           field.String // 邮箱
+	CreatedAt       field.Time   // 用户创建时间
 
 	fieldMap map[string]field.Expr
 }
@@ -78,6 +80,7 @@ func (u *user) updateTableName(table string) *user {
 	u.BackgroundImage = field.NewString(table, "background_image")
 	u.Signature = field.NewString(table, "signature")
 	u.Email = field.NewString(table, "email")
+	u.CreatedAt = field.NewTime(table, "created_at")
 
 	u.fillFieldMap()
 
@@ -94,7 +97,7 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 8)
+	u.fieldMap = make(map[string]field.Expr, 9)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["hash_id"] = u.HashID
 	u.fieldMap["user_name"] = u.UserName
@@ -103,6 +106,7 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["background_image"] = u.BackgroundImage
 	u.fieldMap["signature"] = u.Signature
 	u.fieldMap["email"] = u.Email
+	u.fieldMap["created_at"] = u.CreatedAt
 }
 
 func (u user) clone(db *gorm.DB) user {

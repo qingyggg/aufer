@@ -10,8 +10,6 @@ var (
 	ExpireTime = time.Hour * 1
 )
 
-var Mrs *MyRedis //给hertz使用，用以查看用户信息
-
 type MyRedis struct {
 	RdbCollect    *Collect
 	RdbFavorite   *Favorite
@@ -57,8 +55,4 @@ func InitRedis() *MyRedis {
 		DB:       5,
 	})}
 	return mr
-}
-
-func InitRedisForHertz() {
-	Mrs = InitRedis()
 }

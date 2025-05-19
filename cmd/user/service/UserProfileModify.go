@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	"github.com/qingyggg/aufer/cmd/user/dal/db"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 	"github.com/qingyggg/aufer/pkg/utils"
 )
 
@@ -11,6 +11,7 @@ func (s *UserService) UserProfileModify(req *user.ProfileModRequest) (error, str
 		"signature":        req.Signature,
 		"avatar":           utils.UrlConvertReverse(req.Avatar),
 		"background_image": utils.UrlConvertReverse(req.BackgroundImage),
+		"user_name":        req.Name,
 	}
 	// 过滤空字符串的字段
 	for key, value := range profile {

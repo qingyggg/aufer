@@ -1,8 +1,8 @@
 syntax = "proto3";
 package http.relation;
-import "rpc/common.proto";
-import "rpc/relation.proto";
+import "http/common.proto";
 import "http/api.proto";
+import "http/user.proto";
 option go_package = "http/social/relation";
 
 message FollowRequest {
@@ -10,16 +10,19 @@ message FollowRequest {
   int32 type = 2[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2']; // 1-Follow, 2-Unfollow
 }
 message ListRequest { //follow list
-  string uid = 1[(api.go_tag)='json:"uid,required"'];
+  string uid = 1[(api.go_tag)='query:"uid,required"'];
   // 1-Following, 2-follower
-  int32 type = 2[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2'];
+  int32 type = 2[(api.go_tag)='query:"type,required"',(api.vd)='$==1 || $==2'];
 }
-
+message ListResponse {
+  common.BaseResponse base=1;
+  repeated user.UserBase list = 2; // User information list
+}
 service RelationHandler {
-  rpc Follow(FollowRequest) returns(rpc.common.BaseResponse) {
+  rpc Follow(FollowRequest) returns(common.BaseResponse) {
     option (api.post) = "/relation/follow";
   }
-  rpc FollowList(ListRequest) returns(rpc.relation.ListResponse) {
+  rpc FollowList(ListRequest) returns(ListResponse) {
     option(api.get)="/relation/follow/list";
   }
 }

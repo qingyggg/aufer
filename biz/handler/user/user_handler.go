@@ -5,11 +5,13 @@ import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	user_cmd "github.com/qingyggg/aufer/biz/model/cmd/user"
-	user_req "github.com/qingyggg/aufer/biz/model/http/basic/user"
+	"github.com/qingyggg/aufer/biz/model/http/basic/user"
+	_ "github.com/qingyggg/aufer/biz/model/http/common"
 	"github.com/qingyggg/aufer/biz/mw/jwt"
 	"github.com/qingyggg/aufer/biz/rpc"
+	rpcpack "github.com/qingyggg/aufer/biz/rpc/pack"
 	user_rpc "github.com/qingyggg/aufer/cmd/user/rpc"
+	usercmd "github.com/qingyggg/aufer/kitex_gen/cmd/user"
 	"github.com/qingyggg/aufer/pkg/utils"
 )
 
@@ -18,31 +20,32 @@ import (
 // @Summary 获取用户信息
 // @Description 根据用户ID获取用户的详细信息
 // @Tags 用户管理
-// @Accept json
 // @Produce json
-// @Param uid query string true "要查询的用户ID"
-// @Param my_uid query string true "当前登录用户ID，不提供则默认为guest"
-// @Success 200 {object} user_cmd.UserResponse "用户信息"
+// @Param uid query string true  "要查询的用户ID"
+// @Param my_uid query string false "当前登录用户ID，不提供则默认为guest"
+// @Success 200 {object} user.UserResponse "用户信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /user [GET]
 func User(ctx context.Context, c *app.RequestContext) {
 	var err error
-	req := new(user_req.UserRequest)
-	resp := new(user_cmd.UserResponse)
+	req := new(user.UserRequest)
+	resp := new(user.UserResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-
-	queryUser, err := user_rpc.QueryUser(rpc.Clients.UserClient, ctx, req.Uid, utils.GetUid(c, ctx))
+	if req.MyUid == req.Uid {
+		req.Uid = "current"
+	}
+	queryUser, err := user_rpc.QueryUser(rpc.Clients.UserClient, ctx, req.Uid, req.MyUid)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
 	resp.Base = utils.BuildBaseResp(nil)
-	resp.User = queryUser
+	resp.User = rpcpack.ConvertUser(queryUser)
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -53,16 +56,16 @@ func User(ctx context.Context, c *app.RequestContext) {
 // @Tags 用户管理
 // @Accept json
 // @Produce json
-// @Param request body user_req.LoginOrRegRequest true "用户注册信息"
-// @Success 200 {object} user_cmd.UserActionResponse "注册成功返回的用户信息"
+// @Param request body user.LoginOrRegRequest true "用户注册信息"
+// @Success 200 {object} user.UserActionResponse "注册成功返回的用户信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 409 {object} common.BaseResponse "邮箱已被注册"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /user/register [POST]
 func UserRegister(ctx context.Context, c *app.RequestContext) {
 	var err error
-	req := new(user_req.LoginOrRegRequest)
-	resp := new(user_cmd.UserActionResponse)
+	req := new(user.LoginOrRegRequest)
+	resp := new(user.UserActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
@@ -90,16 +93,16 @@ func UserRegister(ctx context.Context, c *app.RequestContext) {
 // @Tags 用户管理
 // @Accept json
 // @Produce json
-// @Param request body user_req.LoginOrRegRequest true "用户登录信息"
-// @Success 200 {object} user_cmd.UserActionResponse "登录成功返回的用户信息"
+// @Param request body user.LoginOrRegRequest true "用户登录信息"
+// @Success 200 {object} user.UserActionResponse "登录成功返回的用户信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 401 {object} common.BaseResponse "邮箱或密码错误"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
 // @Router /user/login [POST]
 func UserLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
-	req := new(user_req.LoginOrRegRequest)
-	resp := new(user_cmd.UserActionResponse)
+	req := new(user.LoginOrRegRequest)
+	resp := new(user.UserActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
@@ -126,8 +129,8 @@ func UserLogin(ctx context.Context, c *app.RequestContext) {
 // @Tags 用户管理
 // @Accept json
 // @Produce json
-// @Param request body user_req.PwdModRequest true "密码修改信息"
-// @Success 200 {object} user_cmd.UserActionResponse "密码修改成功返回的用户信息"
+// @Param request body user.PwdModRequest true "密码修改信息"
+// @Success 200 {object} user.UserActionResponse "密码修改成功返回的用户信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 401 {object} common.BaseResponse "旧密码验证失败"
 // @Failure 404 {object} common.BaseResponse "用户不存在"
@@ -135,14 +138,14 @@ func UserLogin(ctx context.Context, c *app.RequestContext) {
 // @Router /user/pwd_mod [POST]
 func UserPwdModify(ctx context.Context, c *app.RequestContext) {
 	var err error
-	req := new(user_req.PwdModRequest)
-	resp := new(user_cmd.UserActionResponse)
+	req := new(user.PwdModRequest)
+	resp := new(user.UserActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	uid, puid, err := user_rpc.UserPwdModify(rpc.Clients.UserClient, ctx, &user_cmd.PwdModRequest{NewPassword: req.NewPassword, OldPassword: req.OldPassword, Email: req.Email})
+	uid, puid, err := user_rpc.UserPwdModify(rpc.Clients.UserClient, ctx, &usercmd.PwdModRequest{NewPassword: req.NewPassword, OldPassword: req.OldPassword, Email: req.Email})
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
@@ -160,8 +163,8 @@ func UserPwdModify(ctx context.Context, c *app.RequestContext) {
 // @Tags 用户管理
 // @Accept json
 // @Produce json
-// @Param request body user_req.ProfileModRequest true "用户资料修改信息"
-// @Success 200 {object} user_cmd.UserActionResponse "资料修改成功返回的用户信息"
+// @Param request body user.ProfileModRequest true "用户资料修改信息"
+// @Success 200 {object} user.UserActionResponse "资料修改成功返回的用户信息"
 // @Failure 400 {object} common.BaseResponse "请求参数错误"
 // @Failure 401 {object} common.BaseResponse "未授权，用户未登录"
 // @Failure 404 {object} common.BaseResponse "用户不存在"
@@ -169,14 +172,14 @@ func UserPwdModify(ctx context.Context, c *app.RequestContext) {
 // @Router /user/profile_mod [POST]
 func UserProfileModify(ctx context.Context, c *app.RequestContext) {
 	var err error
-	req := new(user_req.ProfileModRequest)
-	resp := new(user_cmd.UserActionResponse)
+	req := new(user.ProfileModRequest)
+	resp := new(user.UserActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	uid, puid, err := user_rpc.UserProfileModify(rpc.Clients.UserClient, ctx, &user_cmd.ProfileModRequest{
+	uid, puid, err := user_rpc.UserProfileModify(rpc.Clients.UserClient, ctx, &usercmd.ProfileModRequest{
 		Avatar:          req.Avatar,
 		BackgroundImage: req.BackgroundImage,
 		Signature:       req.Signature,

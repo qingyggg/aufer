@@ -2,9 +2,9 @@ package rpc
 
 import (
 	"context"
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
-	"github.com/qingyggg/aufer/biz/model/cmd/user/userhandler"
-	rpc_util "github.com/qingyggg/aufer/cmd"
+	rpcutil "github.com/qingyggg/aufer/cmd"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user/userhandler"
 )
 
 func CheckUserExist(uc userhandler.Client, ctx context.Context, uid string) (bool, error) {
@@ -13,7 +13,7 @@ func CheckUserExist(uc userhandler.Client, ctx context.Context, uid string) (boo
 	if err != nil {
 		return false, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return false, err
 	}
@@ -28,7 +28,7 @@ func QueryUserBase(uc userhandler.Client, ctx context.Context, uid string) (*use
 	if err != nil {
 		return nil, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func QueryUserBaseByPuid(uc userhandler.Client, ctx context.Context, puid int64)
 	if err != nil {
 		return nil, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func QueryUserBases(uc userhandler.Client, ctx context.Context, uids []string) (
 	if err != nil {
 		return nil, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func QueryUser(uc userhandler.Client, ctx context.Context, uid string, myUid str
 	if err != nil {
 		return nil, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func UserRegister(uc userhandler.Client, ctx context.Context, email string, pwd 
 	if err != nil {
 		return "", 0, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return "", 0, err
 	}
@@ -85,7 +85,7 @@ func UserLogin(uc userhandler.Client, ctx context.Context, email string, pwd str
 	if err != nil {
 		return "", 0, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return "", 0, err
 	}
@@ -96,7 +96,7 @@ func UserPwdModify(uc userhandler.Client, ctx context.Context, req *user.PwdModR
 	if err != nil {
 		return "", 0, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return "", 0, err
 	}
@@ -107,7 +107,7 @@ func UserProfileModify(uc userhandler.Client, ctx context.Context, req *user.Pro
 	if err != nil {
 		return "", 0, err
 	}
-	err = rpc_util.CheckBaseResp(res.Base)
+	err = rpcutil.CheckBaseResp(res.Base)
 	if err != nil {
 		return "", 0, err
 	}

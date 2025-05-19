@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/qingyggg/aufer/biz/dal/minio"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
+	"github.com/qingyggg/aufer/biz/dal"
+	"github.com/qingyggg/aufer/biz/model/http/common"
+
 	"github.com/qingyggg/aufer/pkg/errno"
 	"github.com/qingyggg/aufer/pkg/utils"
 )
@@ -33,7 +34,7 @@ func FileUpload(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	// Upload the file to specific dst
-	_, err = minio.MyMio.PutToBucket(ctx, string(fileType), file)
+	_, err = dal.MyDal.Mio.PutToBucket(ctx, string(fileType), file)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return

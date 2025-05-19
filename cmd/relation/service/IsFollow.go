@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/relation"
 	"github.com/qingyggg/aufer/cmd/relation/dal/db"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/relation"
 )
 
 func (s *RelationService) QueryIsFollow(req *relation.IsFollowRequest) (bool, error) {

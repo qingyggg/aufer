@@ -5,14 +5,15 @@ package relation
 import (
 	"context"
 	"github.com/qingyggg/aufer/biz/rpc"
+	rpcpack "github.com/qingyggg/aufer/biz/rpc/pack"
 	"github.com/qingyggg/aufer/pkg/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	common "github.com/qingyggg/aufer/biz/model/cmd/common"
-	relation_cmd "github.com/qingyggg/aufer/biz/model/cmd/relation"
+	common "github.com/qingyggg/aufer/biz/model/http/common"
 	relation "github.com/qingyggg/aufer/biz/model/http/social/relation"
 	rpc_relation "github.com/qingyggg/aufer/cmd/relation/rpc"
+	relationcmd "github.com/qingyggg/aufer/kitex_gen/cmd/relation"
 )
 
 // Follow 关注用户行为
@@ -36,7 +37,7 @@ func Follow(ctx context.Context, c *app.RequestContext) {
 		utils.ErrResp(c, err)
 		return
 	}
-	err = rpc_relation.Follow(rpc.Clients.RelationClient, ctx, &relation_cmd.FollowRequest{
+	err = rpc_relation.Follow(rpc.Clients.RelationClient, ctx, &relationcmd.FollowRequest{
 		Uid:   req.Uid,
 		MyUid: utils.GetUid(c, ctx),
 		Type:  req.Type,
@@ -53,10 +54,10 @@ func Follow(ctx context.Context, c *app.RequestContext) {
 // @Summary 用户关注列表或者被关注列表
 // @Description 用户关注列表或者被关注列表
 // @Tags 用户关系
-// @Accept json
 // @Produce json
-// @Param request body relation.FollowRequest true "用户关注或被关注列表请求"
-// @Success 200 {object} relation_cmd.ListResponse "成功响应"
+// @Param uid query string true  "要被关注的用户ID"
+// @Param type query string true  "1关注，2被关注"
+// @Success 200 {object} relation.ListResponse "成功响应"
 // @Failure 400 {object} common.BaseResponse "请求错误"
 // @Failure 401 {object} common.BaseResponse "未授权"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
@@ -64,13 +65,13 @@ func Follow(ctx context.Context, c *app.RequestContext) {
 func FollowList(ctx context.Context, c *app.RequestContext) {
 	var err error
 	req := new(relation.ListRequest)
-	resp := new(relation_cmd.ListResponse)
+	resp := new(relation.ListResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	users, err := rpc_relation.FollowList(rpc.Clients.RelationClient, ctx, &relation_cmd.ListRequest{
+	users, err := rpc_relation.FollowList(rpc.Clients.RelationClient, ctx, &relationcmd.ListRequest{
 		Uid:  req.Uid,
 		Type: req.Type,
 	})
@@ -79,6 +80,6 @@ func FollowList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp.Base = utils.BuildBaseResp(nil)
-	resp.List = users
+	resp.List = rpcpack.ConvertUserBases(users)
 	c.JSON(consts.StatusOK, resp)
 }

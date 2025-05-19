@@ -1,16 +1,39 @@
 syntax = "proto3";
 package http.publish;
-import "rpc/common.proto";
-import "rpc/article.proto";
 import "http/api.proto";
+import "http/common.proto";
+import "http/user.proto";
 option go_package = "http/basic/article";
+
+message ArticleInfo{
+  int64 like_count = 1; // total number of likes for the video
+  int64 comment_count = 2; // total number of comments on the video
+  bool is_favorite = 3; // true-Liked，false-did not like
+  int64 collect_count = 4;
+  int64 viewed_count=5;
+  bool is_collect=6;
+  string note=7;
+  string title=8;
+  string cover_url=9;
+  string aid=10;
+  string created_date=11;
+  string last_modified_date=12;
+}
+message ArticleCard{
+  ArticleInfo info=1;
+  user.UserBase author=2;
+}
+message Article {
+  ArticleInfo info=1;
+  user.User author=2;
+  string content=3;
+}
 
 message PublishRequest{
   string note=1[(api.go_tag)='json:"note,required"'];
   string title=2[(api.go_tag)='json:"title,required"'];
-  string cover_url=3[(api.go_tag)='json:"cover_url,required"'];
+  string cover_url=3[(api.go_tag)='json:"cover_url"'];
   string content=4[(api.go_tag)='json:"content,required"'];
-  string myUid=5[(api.go_tag)='json:"my_uid,required"'];
 }
 message ModRequest{
   string note=1[(api.go_tag)='json:"note,required"'];
@@ -24,52 +47,66 @@ message Aid{
 }
 //文章卡片列表
 message CardsRequest {
-  string authorId = 1;//作者id
-  int32 offset=2;
-  repeated string tags=3;//文章标签
-  string category=4;//文章种类
-  int32 type=5[(api.go_tag)='json:"type"',(api.vd)='$==1 || $==2'];//1->请求最新的 2->请求最热门的
-  bool is_collected=6;//是否为该用户收藏的文章
-  string uid=7;//用户id
+  string authorId = 1[(api.go_tag)='json:"author_id"'];//作者id
+  int32 offset=2[(api.go_tag)='json:"offset"'];
+  repeated string tags=3[(api.go_tag)='json:"tags"'];//文章标签
+  string category=4[(api.go_tag)='json:"category"'];//文章种类
+  int32 reqType=5[(api.go_tag)='json:"req_type" default:"1"',(api.vd)='$==1 || $==2'];//1->请求最新的 2->请求最热门的
+  bool is_collected=6[(api.go_tag)='json:"is_collected"'];//是否为该用户收藏的文章
+  string uid=7[(api.go_tag)='json:"uid"'];//用户id
 }
 message CollectRequest {
   string aid=1[(api.go_tag)='json:"aid,required"']; //文章的id
   int32 type = 2[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2']; // 1-collect, 2-Uncollect
 }
 message DetailRequest {
-  string aid=1[(api.go_tag)='json:"aid,required"']; //文章的id
-  string uid=2 [(api.go_tag)='json:"uid,required"']; //作者的id
-  string myUid=3[(api.go_tag)='json:"my_uid,required"'];//用户的id，可能为guest
+  string aid=1[(api.go_tag)='query:"aid,required"']; //文章的id
+  string uid=2 [(api.go_tag)='query:"uid,required"']; //作者的id
+  string myUid=3[(api.go_tag)='query:"my_uid" default:"guest"'];//用户的id，可能为guest
 }
 message FavoriteRequest {
   string cid = 1[(api.go_tag)='json:"cid,required"'];
   string aid =2[(api.go_tag)='json:"aid,required"'];
   int32 type = 3[(api.go_tag)='json:"type,required"',(api.vd)='$==1 || $==2'];
 }
+message PubOrModActionResponse {
+  common.BaseResponse base=1;
+  string aid=2;
+}
+message ArticleResponse{
+  common.BaseResponse base=1;
+  Article article=2;
+}
+message CardsResponse {
+  common.BaseResponse base=1;
+  repeated ArticleCard list=2;
+}
+
+
 
 service PublishHandler {
-  rpc PublishAction(PublishRequest) returns(rpc.article.PubOrModActionResponse) {
+  rpc PublishAction(PublishRequest) returns(PubOrModActionResponse) {
     option (api.post) = "/publish";
   }
-  rpc PublishModifyAction(ModRequest) returns(rpc.article.PubOrModActionResponse) {
+  rpc PublishModifyAction(ModRequest) returns(PubOrModActionResponse) {
     option (api.put) = "/publish";
   }
-  rpc PublishDelAction(Aid) returns(rpc.common.BaseResponse) {
+  rpc PublishDelAction(Aid) returns(common.BaseResponse) {
     option (api.delete) = "/publish";
   }
-  rpc PublishDetail(Aid) returns(rpc.article.ArticleResponse) {
+  rpc PublishDetail(Aid) returns(ArticleResponse) {
     option (api.get) = "/publish";
   }
-  rpc PublishList(CardsRequest) returns(rpc.article.CardsResponse) {
+  rpc PublishList(CardsRequest) returns(CardsResponse) {
     option (api.post) = "/publish/list";
   }
-  rpc PublishViewCountAdd(Aid) returns(rpc.common.BaseResponse){
+  rpc PublishViewCountAdd(Aid) returns(common.BaseResponse){
     option (api.post) = "/publish/view_count_add";
   }
-  rpc PublishCollect(CollectRequest) returns(rpc.common.BaseResponse) {
+  rpc PublishCollect(CollectRequest) returns(common.BaseResponse) {
     option (api.post) = "/publish/collect";
   }
-  rpc PublishFavorite(FavoriteRequest) returns(rpc.common.BaseResponse) {
+  rpc PublishFavorite(FavoriteRequest) returns(common.BaseResponse) {
     option (api.post) = "/publish/favorite";
   }
 }

@@ -1,12 +1,12 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/article"
-	"github.com/qingyggg/aufer/biz/model/cmd/comment"
 	"github.com/qingyggg/aufer/biz/model/orm_gen"
 	"github.com/qingyggg/aufer/biz/rpc"
 	"github.com/qingyggg/aufer/cmd/article/dal/db"
 	comment_rpc "github.com/qingyggg/aufer/cmd/comment/rpc"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/comment"
 	"github.com/qingyggg/aufer/pkg/errno"
 	"github.com/qingyggg/aufer/pkg/utils"
 	"sync"
@@ -35,7 +35,7 @@ func (s *ArticleService) ArticleDelete(req *article.DelRequest) (err error) {
 	go func() {
 		defer wg.Done()
 		//2.删除与文章相关的评论
-		err := comment_rpc.CommentDelAction(rpc.Clients.CommentClient, s.ctx, &comment.DelRequest{Aid: req.Aid, Uid: req.Uid})
+		err := comment_rpc.CommentDelAction(rpc.Clients.CommentClient, s.ctx, &comment.DelRequest{Aid: req.Aid, Uid: req.Uid, Type: 1})
 		if err != nil {
 			errChan <- err
 			return

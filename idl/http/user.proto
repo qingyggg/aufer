@@ -1,8 +1,31 @@
 syntax = "proto3";
 package http.user;
 import "http/api.proto";
-import "rpc/user.proto";
+import "http/common.proto";
 option go_package = "http/basic/user";
+
+message UserBase{
+  string avatar = 1; // user avatar URL
+  string background_image =2; // image at the top of the user's personal page
+  string signature = 3; // user profile
+  string name = 4; // user name
+  string uid=5;//hash id
+  string created_date=6;
+  string email=7;
+}
+
+message UserInfo{
+  int64 follow_count = 1; // total number of people the user follows
+  int64 follower_count = 2; // total number of fans
+  bool is_follow = 3; // whether the currently logged-in user follows this user
+  int64 total_favorited = 4; // number of articles for articles published by user
+  int64 work_count = 5; // number of articles published by user
+}
+
+message User {
+  UserBase base=1;
+  UserInfo info=2;
+}
 
 message LoginOrRegRequest {
   string email = 1[(api.go_tag)='json:"email,required"',(api.vd)='email($)'];
@@ -22,25 +45,41 @@ message ProfileModRequest{
 }
 
 message UserRequest {
-  string uid=1[(api.go_tag)='json:"uid,required"'];
-  string myUid=2[(api.go_tag)='json:"my_uid"'];
+  string uid=1[(api.go_tag)='query:"uid,required"'];
+  string myUid=2[(api.go_tag)='query:"my_uid" default:"guest"'];
+}
+message UserResponse {
+  common.BaseResponse base=1;
+  User user = 2; // User Info
+}
+message UserBaseResponse{
+  common.BaseResponse base=1;
+  UserBase user=2;
+}
+message UserBasesResponse{
+  common.BaseResponse base=1;
+  map<string, UserBase>  userMap=2;
+}
+message UserActionResponse {
+  common.BaseResponse base=1;
+  string uid=2;
+  int64 puid=3;//用以存储cookie的user主键
 }
 
-
 service UserHandler {
-  rpc User(UserRequest) returns(rpc.user.UserResponse) {
+  rpc User(UserRequest) returns(UserResponse) {
     option (api.get) = "/user";
   }
-  rpc UserRegister(LoginOrRegRequest) returns(rpc.user.UserActionResponse) {
+  rpc UserRegister(LoginOrRegRequest) returns(UserActionResponse) {
     option (api.post) = "/user/register";
   }
-  rpc UserLogin(LoginOrRegRequest) returns(rpc.user.UserActionResponse) {
+  rpc UserLogin(LoginOrRegRequest) returns(UserActionResponse) {
     option (api.post) = "/user/login";
   }
-  rpc UserPwdModify(PwdModRequest) returns(rpc.user.UserActionResponse){
+  rpc UserPwdModify(PwdModRequest) returns(UserActionResponse){
     option (api.post) = "/user/pwd_mod";
   }
-  rpc UserProfileModify(ProfileModRequest) returns(rpc.user.UserActionResponse){
+  rpc UserProfileModify(ProfileModRequest) returns(UserActionResponse){
     option (api.post) = "/user/profile_mod";
   }
 }

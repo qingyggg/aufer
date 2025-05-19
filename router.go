@@ -9,7 +9,8 @@ import (
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/hertz-contrib/swagger"
 	handler "github.com/qingyggg/aufer/biz/handler"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
+	"github.com/qingyggg/aufer/biz/model/http/common"
+
 	"github.com/qingyggg/aufer/biz/mw/jwt"
 	_ "github.com/qingyggg/aufer/docs" // 导入swagger文档
 	"github.com/qingyggg/aufer/pkg/errno"

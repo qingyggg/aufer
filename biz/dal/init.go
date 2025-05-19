@@ -18,10 +18,17 @@ type Dal struct {
 
 var MyDal *Dal
 
+func init() {
+	MyDal = new(Dal)
+}
+
+func InitForHertz() {
+	MyDal.Mio = minio.InitForHertz()
+	MyDal.Mrs = redis.InitRedis()
+}
+
 // Init init dal
 func Init() error {
-	MyDal = new(Dal)
-
 	err, qdb := db.Init() // mysql init
 	if err != nil {
 		return errno.ServiceErr.WithMessage("初始化mariadb失败，失败原因：" + err.Error())

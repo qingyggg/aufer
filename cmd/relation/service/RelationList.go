@@ -1,11 +1,11 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/relation"
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	"github.com/qingyggg/aufer/biz/rpc"
 	"github.com/qingyggg/aufer/cmd/relation/dal/db"
 	userrpc "github.com/qingyggg/aufer/cmd/user/rpc"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/relation"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 )
 
 func (s *RelationService) GetRelationList(req *relation.ListRequest) ([]*user.UserBase, error) {

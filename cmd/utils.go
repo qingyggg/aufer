@@ -2,7 +2,8 @@ package rpc_util
 
 import (
 	"errors"
-	"github.com/qingyggg/aufer/biz/model/cmd/common"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/common"
+
 	"github.com/qingyggg/aufer/pkg/errno"
 	"time"
 )

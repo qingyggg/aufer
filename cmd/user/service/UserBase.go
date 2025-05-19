@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	"github.com/qingyggg/aufer/cmd/user/dal/db"
 	"github.com/qingyggg/aufer/cmd/user/pack"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 )
 
 func (s *UserService) QueryUserBase(req *user.UserBaseRequest) (*user.UserBase, error) {

@@ -4,7 +4,7 @@ package article
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/qingyggg/aufer/biz/handler/article"
+	article "github.com/qingyggg/aufer/biz/handler/article"
 )
 
 /*

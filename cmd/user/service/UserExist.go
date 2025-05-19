@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/user"
 	"github.com/qingyggg/aufer/cmd/user/dal/db"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/user"
 )
 
 func (s *UserService) QueryUserExist(req *user.UserExistRequest) (bool, error) {

@@ -15,7 +15,7 @@ func GetCommentListByTopCommentID(ctx context.Context, aHashId string, cHashId s
 	}
 	defer cursor.Close(ctx)
 	//将结果推入cids数组
-	var cids []string
+	var cids = []string{}
 	for cursor.Next(ctx) {
 		item := new(CommentClosure)
 		if err := cursor.Decode(item); err != nil {

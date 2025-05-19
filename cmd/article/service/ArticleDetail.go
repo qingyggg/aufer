@@ -1,12 +1,12 @@
 package service
 
 import (
-	"github.com/qingyggg/aufer/biz/model/cmd/article"
 	"github.com/qingyggg/aufer/biz/rpc"
 	"github.com/qingyggg/aufer/cmd/article/dal/db"
 	"github.com/qingyggg/aufer/cmd/article/pack"
 	comment_rpc "github.com/qingyggg/aufer/cmd/comment/rpc"
 	user_rpc "github.com/qingyggg/aufer/cmd/user/rpc"
+	"github.com/qingyggg/aufer/kitex_gen/cmd/article"
 	"github.com/qingyggg/aufer/pkg/errno"
 	"sync"
 )

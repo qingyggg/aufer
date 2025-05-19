@@ -43,6 +43,7 @@ CREATE TABLE `users` (
                        `background_image` VARCHAR(255) NOT NULL COMMENT '用户个人页顶部大图',
                        `signature`        TINYTEXT NOT NULL COMMENT '个人简介',
                         `email`  VARCHAR(255) NOT NULL UNIQUE COMMENT '邮箱',
+                       `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间',
                        INDEX `email_password_idx` (`email`, `password`),
                        INDEX (email(50))  -- 前缀索引
 ) AUTO_INCREMENT = 1000 DEFAULT CHARSET = utf8mb4 COMMENT = '用户表';

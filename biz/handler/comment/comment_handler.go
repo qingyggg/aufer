@@ -4,12 +4,14 @@ import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	comment_cmd "github.com/qingyggg/aufer/biz/model/cmd/comment"
-	common "github.com/qingyggg/aufer/biz/model/cmd/common"
+	rpcpack "github.com/qingyggg/aufer/biz/rpc/pack"
+
+	common "github.com/qingyggg/aufer/biz/model/http/common"
 	comment "github.com/qingyggg/aufer/biz/model/http/interact/comment"
 	favorite "github.com/qingyggg/aufer/biz/model/http/interact/favorite"
 	"github.com/qingyggg/aufer/biz/rpc"
-	comment_rpc "github.com/qingyggg/aufer/cmd/comment/rpc"
+	commentrpc "github.com/qingyggg/aufer/cmd/comment/rpc"
+	commentcmd "github.com/qingyggg/aufer/kitex_gen/cmd/comment"
 	"github.com/qingyggg/aufer/pkg/errno"
 	"github.com/qingyggg/aufer/pkg/utils"
 )
@@ -21,7 +23,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param request body comment.CmtRequest true "评论创建信息"
-// @Success 200 {object} comment_cmd.CmtActionResponse "成功响应，包含评论ID"
+// @Success 200 {object} comment.CmtActionResponse "成功响应，包含评论ID"
 // @Failure 400 {object} common.BaseResponse "请求错误"
 // @Failure 401 {object} common.BaseResponse "未授权"
 // @Failure 500 {object} common.BaseResponse "服务器内部错误"
@@ -29,13 +31,13 @@ import (
 func CommentAction(ctx context.Context, c *app.RequestContext) {
 	var err error
 	req := new(comment.CmtRequest)
-	resp := new(comment_cmd.CmtActionResponse)
+	resp := new(comment.CmtActionResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	cid, err := comment_rpc.CommentAction(rpc.Clients.CommentClient, ctx, &comment_cmd.CmtRequest{
+	cid, err := commentrpc.CommentAction(rpc.Clients.CommentClient, ctx, &commentcmd.CmtRequest{
 		Pid:     req.Pid,
 		Aid:     req.Aid,
 		Content: req.Content,
@@ -74,7 +76,7 @@ func CommentDelAction(ctx context.Context, c *app.RequestContext) {
 		utils.ErrResp(c, err)
 		return
 	}
-	err = comment_rpc.CommentDelAction(rpc.Clients.CommentClient, ctx, &comment_cmd.DelRequest{
+	err = commentrpc.CommentDelAction(rpc.Clients.CommentClient, ctx, &commentcmd.DelRequest{
 		Cid:  req.Cid,
 		Aid:  req.Aid,
 		Type: req.Type,
@@ -95,7 +97,7 @@ func CommentDelAction(ctx context.Context, c *app.RequestContext) {
 // @Accept json
 // @Produce json
 // @Param request body comment.CardsRequest true "评论列表参数"
-// @Success 200 {object} comment_cmd.CardsResponse "成功响应，包含评论列表"
+// @Success 200 {object} comment.CardsResponse "成功响应，包含评论列表"
 // @Failure 400 {object} common.BaseResponse "请求错误"
 // @Failure 401 {object} common.BaseResponse "未授权"
 // @Failure 404 {object} common.BaseResponse "评论未找到"
@@ -104,13 +106,13 @@ func CommentDelAction(ctx context.Context, c *app.RequestContext) {
 func CommentList(ctx context.Context, c *app.RequestContext) {
 	var err error
 	req := new(comment.CardsRequest)
-	resp := new(comment_cmd.CardsResponse)
+	resp := new(comment.CardsResponse)
 	err = c.BindAndValidate(req)
 	if err != nil {
 		utils.ErrResp(c, err)
 		return
 	}
-	cmts, err := comment_rpc.CommentList(rpc.Clients.CommentClient, ctx, &comment_cmd.CardsRequest{
+	cmts, err := commentrpc.CommentList(rpc.Clients.CommentClient, ctx, &commentcmd.CardsRequest{
 		Aid:    req.Aid,
 		Cid:    req.Cid,
 		Degree: req.Degree,
@@ -121,7 +123,7 @@ func CommentList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp.Base = utils.BuildBaseResp(nil)
-	resp.List = cmts
+	resp.List = rpcpack.ConverComments(cmts)
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -147,7 +149,7 @@ func CommentFavorite(ctx context.Context, c *app.RequestContext) {
 		utils.ErrResp(c, err)
 		return
 	}
-	err = comment_rpc.CommentFavorite(rpc.Clients.CommentClient, ctx, &comment_cmd.FavoriteRequest{
+	err = commentrpc.CommentFavorite(rpc.Clients.CommentClient, ctx, &commentcmd.FavoriteRequest{
 		Cid:  req.Cid,
 		Type: req.Type,
 		Uid:  utils.GetUid(c, ctx),
